@@ -22,6 +22,7 @@ export const NewTodo = () => {
             className="mr-3 w-full appearance-none border-none bg-transparent px-2 py-1 leading-tight text-gray-400 focus:outline-none"
             type="text"
             placeholder="New Todo"
+            spellCheck={false}
             aria-label="New Todo"
             value={input}
             onChange={(e) => setInput(e.target.value)}
