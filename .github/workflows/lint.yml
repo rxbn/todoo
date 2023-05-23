@@ -5,6 +5,14 @@ on:
   - push
   - pull_request
 
+env:
+  DATABASE_URL: https://fake.com
+  NEXTAUTH_SECRET: fake
+  NEXTAUTH_URL: http://localhost:3000
+  KEYCLOAK_CLIENT_ID: fake
+  KEYCLOAK_CLIENT_SECRET: fake
+  KEYCLOAK_ISSUER: https://fake.com
+
 jobs:
   lint:
     runs-on: ubuntu-latest
