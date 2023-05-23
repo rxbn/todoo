@@ -18,7 +18,7 @@ export const TodoApp = (props: { session: SessionContextValue }) => {
       <NewTodo />
       <TodoView title="Open" todos={incompleteTodos} />
       <TodoView title="Completed" todos={completedTodos} />
-      <div className="fixed bottom-3 left-1/2">
+      <div className="fixed bottom-0 flex w-full justify-center pb-4">
         <button
           className="rounded border-4 border-red-500 bg-red-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-red-700 hover:bg-red-700"
           type="button"
