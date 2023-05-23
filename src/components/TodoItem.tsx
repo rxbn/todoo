@@ -6,7 +6,7 @@ import {
   FaSave,
   FaTrashAlt,
 } from "react-icons/fa";
-import { RouterOutputs, api } from "~/utils/api";
+import { type RouterOutputs, api } from "~/utils/api";
 
 type Todo = RouterOutputs["todos"]["get"][number];
 export const TodoItem = (props: Todo) => {

@@ -8,7 +8,7 @@ import KeycloakProvider from "next-auth/providers/keycloak";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
-import { Adapter } from "next-auth/adapters";
+import type { Adapter } from "next-auth/adapters";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
