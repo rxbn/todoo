@@ -15,13 +15,7 @@ export const TodoItem = (props: Todo) => {
 
   const ctx = api.useContext();
 
-  const { mutate: markComplete } = api.todos.markComplete.useMutation({
-    onSuccess: () => {
-      void ctx.todos.get.invalidate();
-    },
-  });
-
-  const { mutate: markIncomplete } = api.todos.markIncomplete.useMutation({
+  const { mutate: toggleDone } = api.todos.toggleDone.useMutation({
     onSuccess: () => {
       void ctx.todos.get.invalidate();
     },
@@ -89,7 +83,7 @@ export const TodoItem = (props: Todo) => {
           <button
             className="flex-shrink-0 rounded border-4 border-green-500 bg-green-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-green-700 hover:bg-green-700"
             type="button"
-            onClick={() => markComplete({ id: props.id })}
+            onClick={() => toggleDone({ id: props.id, done: true })}
             hidden={props.done || edit}
           >
             <FaCheck />
@@ -97,7 +91,7 @@ export const TodoItem = (props: Todo) => {
           <button
             className="mr-2 flex-shrink-0 rounded border-4 border-green-500 bg-green-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-green-700 hover:bg-green-700"
             type="button"
-            onClick={() => markIncomplete({ id: props.id })}
+            onClick={() => toggleDone({ id: props.id, done: false })}
             hidden={!props.done}
           >
             <FaRegCircle />

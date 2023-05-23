@@ -44,13 +44,15 @@ export const todoRouter = createTRPCRouter({
           content: input.content,
         },
       });
+
       return todo;
     }),
 
-  markComplete: protectedProcedure
+  toggleDone: protectedProcedure
     .input(
       z.object({
         id: z.string(),
+        done: z.boolean(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -59,27 +61,10 @@ export const todoRouter = createTRPCRouter({
           id: input.id,
         },
         data: {
-          done: true,
+          done: input.done,
         },
       });
-      return todo;
-    }),
 
-  markIncomplete: protectedProcedure
-    .input(
-      z.object({
-        id: z.string(),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const todo = await ctx.prisma.todo.update({
-        where: {
-          id: input.id,
-        },
-        data: {
-          done: false,
-        },
-      });
       return todo;
     }),
 
@@ -95,6 +80,7 @@ export const todoRouter = createTRPCRouter({
           id: input.id,
         },
       });
+
       return todo;
     }),
 });
