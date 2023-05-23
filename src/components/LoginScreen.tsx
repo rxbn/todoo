@@ -10,7 +10,8 @@ export const LoginScreen = () => {
         type="button"
         onClick={() => void signIn()}
       >
-        <FaSignInAlt />
+        <FaSignInAlt className="inline-flex" />
+        <span className="ml-2">Sign In</span>
       </button>
     </div>
   );

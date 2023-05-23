@@ -24,7 +24,8 @@ export const TodoApp = (props: { session: SessionContextValue }) => {
           type="button"
           onClick={() => void signOut()}
         >
-          <FaSignOutAlt />
+          <FaSignOutAlt className="inline-flex" />
+          <span className="ml-2">Sign Out</span>
         </button>
       </div>
     </div>
