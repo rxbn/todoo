@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { FaCheck, FaPencilAlt, FaSave, FaTrashAlt } from "react-icons/fa";
+import {
+  FaCheck,
+  FaPencilAlt,
+  FaRegCircle,
+  FaSave,
+  FaTrashAlt,
+} from "react-icons/fa";
 import { RouterOutputs, api } from "~/utils/api";
 
 type Todo = RouterOutputs["todos"]["get"][number];
@@ -10,6 +16,12 @@ export const TodoItem = (props: Todo) => {
   const ctx = api.useContext();
 
   const { mutate: markComplete } = api.todos.markComplete.useMutation({
+    onSuccess: () => {
+      void ctx.todos.get.invalidate();
+    },
+  });
+
+  const { mutate: markIncomplete } = api.todos.markIncomplete.useMutation({
     onSuccess: () => {
       void ctx.todos.get.invalidate();
     },
@@ -81,6 +93,14 @@ export const TodoItem = (props: Todo) => {
             hidden={props.done || edit}
           >
             <FaCheck />
+          </button>
+          <button
+            className="mr-2 flex-shrink-0 rounded border-4 border-green-500 bg-green-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-green-700 hover:bg-green-700"
+            type="button"
+            onClick={() => markIncomplete({ id: props.id })}
+            hidden={!props.done}
+          >
+            <FaRegCircle />
           </button>
           <button
             className="flex-shrink-0 rounded border-4 border-red-500 bg-red-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-red-700 hover:bg-red-700"
