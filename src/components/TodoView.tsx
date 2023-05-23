@@ -13,7 +13,7 @@ export const TodoView = (props: {
       <div className="h-8" />
       <h2 className="pb-3 text-center text-2xl font-bold">{props.title}</h2>
       {props.todos.map((todo) => (
-        <TodoItem id={todo.id} content={todo.content} done={todo.done} />
+        <TodoItem {...todo} key={todo.id} />
       ))}
     </div>
   );

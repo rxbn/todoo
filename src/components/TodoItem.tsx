@@ -1,12 +1,9 @@
 import { useState } from "react";
 import { FaCheck, FaPencilAlt, FaSave, FaTrashAlt } from "react-icons/fa";
-import { api } from "~/utils/api";
+import { RouterOutputs, api } from "~/utils/api";
 
-export const TodoItem = (props: {
-  id: string;
-  content: string;
-  done: boolean;
-}) => {
+type Todo = RouterOutputs["todos"]["get"][number];
+export const TodoItem = (props: Todo) => {
   const [edit, setEdit] = useState(false);
   const [input, setInput] = useState(props.content);
 
