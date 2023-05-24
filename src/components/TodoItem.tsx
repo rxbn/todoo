@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   FaCheck,
   FaPencilAlt,
@@ -12,6 +12,7 @@ type Todo = RouterOutputs["todos"]["get"][number];
 export const TodoItem = (props: Todo) => {
   const [edit, setEdit] = useState(false);
   const [input, setInput] = useState(props.content);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const ctx = api.useContext();
 
@@ -33,6 +34,13 @@ export const TodoItem = (props: Todo) => {
     },
   });
 
+  useEffect(() => {
+    if (edit && inputRef.current) {
+      inputRef.current.focus();
+      inputRef.current.select();
+    }
+  }, [edit]);
+
   return (
     <div className="flex justify-center">
       <ul className="w-full max-w-lg">
@@ -45,12 +53,19 @@ export const TodoItem = (props: Todo) => {
             value={input}
             spellCheck={false}
             aria-label={props.content}
+            ref={inputRef}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 e.preventDefault();
                 if (input !== "") {
                   editTodo({ id: props.id, content: input });
+                  if (inputRef.current) {
+                    inputRef.current.setSelectionRange(
+                      inputRef.current.value.length,
+                      inputRef.current.value.length
+                    );
+                  }
                   setEdit(false);
                 }
               }
