@@ -17,6 +17,8 @@ export const todoRouter = createTRPCRouter({
     .input(
       z.object({
         content: z.string(),
+        tags: z.string().optional(),
+        dueDate: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -24,6 +26,8 @@ export const todoRouter = createTRPCRouter({
         data: {
           userId: ctx.session.user.id,
           content: input.content,
+          tags: input.tags,
+          dueDate: input.dueDate,
         },
       });
 

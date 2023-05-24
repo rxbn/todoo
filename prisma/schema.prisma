@@ -19,6 +19,8 @@ model Todo {
   id      String  @id @default(cuid())
   userId  String
   content String
+  tags    String?
+  dueDate String?
   done    Boolean @default(false)
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
