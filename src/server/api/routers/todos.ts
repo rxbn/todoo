@@ -7,6 +7,7 @@ export const todoRouter = createTRPCRouter({
     .query(({ ctx, input }) => {
       return ctx.prisma.todo.findMany({
         where: {
+          userId: ctx.session.user.id,
           done: input.done,
         },
       });
@@ -21,6 +22,7 @@ export const todoRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const todo = await ctx.prisma.todo.create({
         data: {
+          userId: ctx.session.user.id,
           content: input.content,
         },
       });
