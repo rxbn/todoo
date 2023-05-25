@@ -145,6 +145,14 @@ export const TodoItem = (props: Todo) => {
                     aria-label="Set tags"
                     value={tags}
                     onChange={(e) => setTags(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        if (tags !== "") {
+                          showTagList(false);
+                        }
+                      }
+                    }}
                   />
                 </div>
               )}
