@@ -147,7 +147,7 @@ export const NewTodo = () => {
           </div>
           {tags || dueDate ? (
             <div className="mt-2 flex px-2 text-xs text-slate-400">
-              {tags.length > 0 && (
+              {tags && (
                 <div className="mr-2 inline-flex items-center">
                   <FaTag className="mr-0.5" />
                   {tags.split(",").map(
