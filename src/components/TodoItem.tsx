@@ -41,39 +41,30 @@ export const TodoItem = (props: Todo) => {
     },
   });
 
-  const calendarRef = useRef<HTMLDivElement | null>(null);
-  useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
-      if (
-        calendarRef.current &&
-        !calendarRef.current.contains(e.target as Node)
-      ) {
-        showCalendar(false);
-      }
-    }
+  function useClickOutside(
+    ref: React.RefObject<HTMLElement>,
+    handler: () => void
+  ) {
+    useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (ref.current && !ref.current.contains(event.target as Node)) {
+          handler();
+        }
+      };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [calendarRef]);
+      document.addEventListener("mousedown", handleClickOutside);
+
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref, handler]);
+  }
+
+  const calendarRef = useRef<HTMLDivElement | null>(null);
+  useClickOutside(calendarRef, () => showCalendar(false));
 
   const tagListRef = useRef<HTMLDivElement | null>(null);
-  useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
-      if (
-        tagListRef.current &&
-        !tagListRef.current.contains(e.target as Node)
-      ) {
-        showTagList(false);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [tagListRef]);
+  useClickOutside(tagListRef, () => showTagList(false));
 
   useEffect(() => {
     if (edit && inputRef.current) {
