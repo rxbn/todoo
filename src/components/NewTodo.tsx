@@ -87,6 +87,7 @@ export const NewTodo = () => {
                     type="text"
                     aria-label="Set tags"
                     value={tags}
+                    autoFocus={true}
                     onChange={(e) => setTags(e.target.value)}
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
@@ -119,6 +120,7 @@ export const NewTodo = () => {
                     type="date"
                     aria-label="Set due date"
                     value={dueDate}
+                    autoFocus={true}
                     onChange={(e) => setDueDate(e.target.value)}
                   />
                 </div>
