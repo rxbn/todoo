@@ -1,6 +1,8 @@
 import { Popover, Transition } from "@headlessui/react";
 import { type Dispatch, Fragment, type SetStateAction } from "react";
 import { FaCalendar } from "react-icons/fa";
+import Calendar from "react-calendar";
+import dayjs from "dayjs";
 
 export const DueDate = (props: {
   dueDate: string;
@@ -28,20 +30,25 @@ export const DueDate = (props: {
               leaveFrom="opacity-100 translate-y-0"
               leaveTo="opacity-0 translate-y-1"
             >
-              <Popover.Panel className="absolute left-1/2 z-10 mt-3 w-screen max-w-sm -translate-x-1/2 transform px-4 sm:px-0 lg:max-w-[200px]">
-                <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-                  <div className="relative bg-slate-400 p-7 text-black">
-                    <span className="text-xl font-bold">Set due date:</span>
-                    <input
-                      className="w-full appearance-none border-none bg-transparent leading-tight focus:outline-none"
-                      type="date"
-                      aria-label="Set due date"
-                      value={props.dueDate}
-                      autoFocus={true}
-                      onChange={(e) => props.setDueDate(e.target.value)}
-                    />
+              <Popover.Panel className="absolute left-1/2 z-10 mt-3 w-screen max-w-sm -translate-x-1/2 transform px-4 sm:px-0 lg:max-w-sm">
+                {({ close }) => (
+                  <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+                    <div className="relative bg-white/10 p-7 text-white backdrop-blur-md">
+                      <span className="text-xl font-bold">Set due date:</span>
+                      <Calendar
+                        className="mt-2 rounded bg-white/20"
+                        value={props.dueDate}
+                        onChange={(e) => {
+                          if (!e) return;
+                          props.setDueDate(
+                            dayjs(e.toString()).format("YYYY-MM-DD")
+                          );
+                          close();
+                        }}
+                      />
+                    </div>
                   </div>
-                </div>
+                )}
               </Popover.Panel>
             </Transition>
           </>
