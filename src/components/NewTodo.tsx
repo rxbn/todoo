@@ -1,13 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { FaCalendar, FaPlus, FaTag, FaTimesCircle } from "react-icons/fa";
 import { api } from "~/utils/api";
+import { TagList } from "./TagList";
+import { DueDate } from "./DueDate";
 
 export const NewTodo = () => {
   const [input, setInput] = useState("");
   const [tags, setTags] = useState("");
-  const [tagList, showTagList] = useState(false);
   const [dueDate, setDueDate] = useState("");
-  const [calendar, showCalendar] = useState(false);
 
   const ctx = api.useContext();
 
@@ -19,31 +19,6 @@ export const NewTodo = () => {
       void ctx.todos.get.invalidate();
     },
   });
-
-  function useClickOutside(
-    ref: React.RefObject<HTMLElement>,
-    handler: () => void
-  ) {
-    useEffect(() => {
-      const handleClickOutside = (event: MouseEvent) => {
-        if (ref.current && !ref.current.contains(event.target as Node)) {
-          handler();
-        }
-      };
-
-      document.addEventListener("mousedown", handleClickOutside);
-
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, [ref, handler]);
-  }
-
-  const calendarRef = useRef<HTMLDivElement | null>(null);
-  useClickOutside(calendarRef, () => showCalendar(false));
-
-  const tagListRef = useRef<HTMLDivElement | null>(null);
-  useClickOutside(tagListRef, () => showTagList(false));
 
   return (
     <div className="flex justify-center">
@@ -68,64 +43,8 @@ export const NewTodo = () => {
               }}
               disabled={isCreating}
             />
-            <div className="relative inline-flex">
-              <button
-                className="mr-2 flex-shrink-0 rounded border-4 border-slate-500 bg-slate-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-slate-700 hover:bg-slate-700"
-                type="button"
-                onClick={() => showTagList(true)}
-              >
-                <FaTag />
-              </button>
-              {tagList && (
-                <div
-                  ref={tagListRef}
-                  className="absolute left-0 top-full mt-2 rounded-md border border-slate-600 bg-slate-400 p-4 text-black shadow-lg"
-                >
-                  <span className="px-2 py-1 leading-tight">Set tags:</span>
-                  <input
-                    className="w-48 appearance-none border-none bg-slate-500 px-2 py-1 leading-tight focus:outline-none"
-                    type="text"
-                    aria-label="Set tags"
-                    value={tags}
-                    autoFocus={true}
-                    onChange={(e) => setTags(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                        if (tags !== "") {
-                          showTagList(false);
-                        }
-                      }
-                    }}
-                  />
-                </div>
-              )}
-            </div>
-            <div className="relative inline-flex">
-              <button
-                className="mr-2 flex-shrink-0 rounded border-4 border-orange-500 bg-orange-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-orange-700 hover:bg-orange-700"
-                type="button"
-                onClick={() => showCalendar(true)}
-              >
-                <FaCalendar />
-              </button>
-              {calendar && (
-                <div
-                  ref={calendarRef}
-                  className="absolute left-0 top-full mt-2 rounded-md border border-slate-600 bg-slate-400 p-4 text-black shadow-lg"
-                >
-                  <span className="px-2 py-1 leading-tight">Set due date:</span>
-                  <input
-                    className="w-full appearance-none border-none bg-transparent px-2 py-1 leading-tight focus:outline-none"
-                    type="date"
-                    aria-label="Set due date"
-                    value={dueDate}
-                    autoFocus={true}
-                    onChange={(e) => setDueDate(e.target.value)}
-                  />
-                </div>
-              )}
-            </div>
+            <TagList hidden={false} tags={tags} setTags={setTags} />
+            <DueDate hidden={false} dueDate={dueDate} setDueDate={setDueDate} />
             <button
               className="flex-shrink-0 rounded border-4 border-blue-500 bg-blue-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-blue-700 hover:bg-blue-700"
               type="button"

@@ -10,15 +10,15 @@ import {
   FaTrashAlt,
 } from "react-icons/fa";
 import { type RouterOutputs, api } from "~/utils/api";
+import { TagList } from "./TagList";
+import { DueDate } from "./DueDate";
 
 type Todo = RouterOutputs["todos"]["get"][number];
 export const TodoItem = (props: Todo) => {
   const [edit, setEdit] = useState(false);
   const [input, setInput] = useState(props.content);
-  const [dueDate, setDueDate] = useState(props.dueDate || undefined);
-  const [calendar, showCalendar] = useState(false);
-  const [tags, setTags] = useState(props.tags || undefined);
-  const [tagList, showTagList] = useState(false);
+  const [dueDate, setDueDate] = useState(props.dueDate);
+  const [tags, setTags] = useState(props.tags);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const ctx = api.useContext();
@@ -40,31 +40,6 @@ export const TodoItem = (props: Todo) => {
       void ctx.todos.get.invalidate();
     },
   });
-
-  function useClickOutside(
-    ref: React.RefObject<HTMLElement>,
-    handler: () => void
-  ) {
-    useEffect(() => {
-      const handleClickOutside = (event: MouseEvent) => {
-        if (ref.current && !ref.current.contains(event.target as Node)) {
-          handler();
-        }
-      };
-
-      document.addEventListener("mousedown", handleClickOutside);
-
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, [ref, handler]);
-  }
-
-  const calendarRef = useRef<HTMLDivElement | null>(null);
-  useClickOutside(calendarRef, () => showCalendar(false));
-
-  const tagListRef = useRef<HTMLDivElement | null>(null);
-  useClickOutside(tagListRef, () => showTagList(false));
 
   useEffect(() => {
     if (edit && inputRef.current) {
@@ -115,66 +90,8 @@ export const TodoItem = (props: Todo) => {
             >
               <FaPencilAlt />
             </button>
-            <div className="relative inline-flex">
-              <button
-                className="mr-2 flex-shrink-0 rounded border-4 border-slate-500 bg-slate-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-slate-700 hover:bg-slate-700"
-                type="button"
-                hidden={!edit}
-                onClick={() => showTagList(true)}
-              >
-                <FaTag />
-              </button>
-              {tagList && (
-                <div
-                  ref={tagListRef}
-                  className="absolute left-0 top-full mt-2 rounded-md border border-slate-600 bg-slate-400 p-4 text-black shadow-lg"
-                >
-                  <span className="px-2 py-1 leading-tight">Set tags:</span>
-                  <input
-                    className="w-48 appearance-none border-none bg-slate-500 px-2 py-1 leading-tight focus:outline-none"
-                    type="text"
-                    aria-label="Set tags"
-                    value={tags}
-                    autoFocus={true}
-                    onChange={(e) => setTags(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                        if (tags !== "") {
-                          showTagList(false);
-                        }
-                      }
-                    }}
-                  />
-                </div>
-              )}
-            </div>
-            <div className="relative inline-flex">
-              <button
-                className="mr-2 flex-shrink-0 rounded border-4 border-orange-500 bg-orange-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-orange-700 hover:bg-orange-700"
-                type="button"
-                hidden={!edit}
-                onClick={() => showCalendar(true)}
-              >
-                <FaCalendar />
-              </button>
-              {calendar && (
-                <div
-                  ref={calendarRef}
-                  className="absolute left-0 top-full mt-2 rounded-md border border-slate-600 bg-slate-400 p-4 text-black shadow-lg"
-                >
-                  <span className="px-2 py-1 leading-tight">Set due date:</span>
-                  <input
-                    className="w-full appearance-none border-none bg-transparent px-2 py-1 leading-tight focus:outline-none"
-                    type="date"
-                    aria-label="Set due date"
-                    value={dueDate}
-                    autoFocus={true}
-                    onChange={(e) => setDueDate(e.target.value)}
-                  />
-                </div>
-              )}
-            </div>
+            <TagList hidden={!edit} tags={tags} setTags={setTags} />
+            <DueDate hidden={!edit} dueDate={dueDate} setDueDate={setDueDate} />
             <button
               className="flex-shrink-0 rounded border-4 border-green-500 bg-green-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-green-700 hover:bg-green-700"
               type="button"
