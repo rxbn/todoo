@@ -31,10 +31,10 @@ export const TagList = (props: {
               <Popover.Panel className="absolute left-1/2 z-10 mt-3 w-screen max-w-sm -translate-x-1/2 transform px-4 sm:px-0 lg:max-w-sm">
                 {({ close }) => (
                   <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-                    <div className="relative bg-slate-400 p-7 text-black">
+                    <div className="relative bg-white/10 p-7 text-white backdrop-blur-md">
                       <span className="text-xl font-bold">Set tags:</span>
                       <input
-                        className="mt-2 h-8 w-full appearance-none rounded border-none bg-slate-300 leading-tight focus:outline-none"
+                        className="mt-2 h-8 w-full appearance-none rounded-lg border-none bg-white/20 px-2 leading-tight focus:outline-none"
                         type="text"
                         aria-label="Set tags"
                         value={props.tags}
