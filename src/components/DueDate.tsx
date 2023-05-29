@@ -1,5 +1,5 @@
 import { Popover, Transition } from "@headlessui/react";
-import { Dispatch, Fragment, SetStateAction } from "react";
+import { type Dispatch, Fragment, type SetStateAction } from "react";
 import { FaCalendar } from "react-icons/fa";
 
 export const DueDate = (props: {
