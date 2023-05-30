@@ -7,11 +7,11 @@ import {
   FaSave,
   FaTag,
   FaTimesCircle,
-  FaTrashAlt,
 } from "react-icons/fa";
 import { type RouterOutputs, api } from "~/utils/api";
 import { TagList } from "./TagList";
 import { DueDate } from "./DueDate";
+import { DeleteConfirmation } from "./DeleteConfirmation";
 
 type Todo = RouterOutputs["todos"]["get"][number];
 export const TodoItem = (props: Todo) => {
@@ -30,12 +30,6 @@ export const TodoItem = (props: Todo) => {
   });
 
   const { mutate: editTodo } = api.todos.edit.useMutation({
-    onSuccess: () => {
-      void ctx.todos.get.invalidate();
-    },
-  });
-
-  const { mutate: deleteTodo } = api.todos.delete.useMutation({
     onSuccess: () => {
       void ctx.todos.get.invalidate();
     },
@@ -121,14 +115,7 @@ export const TodoItem = (props: Todo) => {
             >
               <FaRegCircle />
             </button>
-            <button
-              className="flex-shrink-0 rounded border-4 border-red-500 bg-red-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-red-700 hover:bg-red-700"
-              type="button"
-              onClick={() => deleteTodo({ id: props.id })}
-              hidden={!props.done}
-            >
-              <FaTrashAlt />
-            </button>
+            <DeleteConfirmation hidden={!props.done} id={props.id} />
           </div>
           {(tags || dueDate) && !props.done ? (
             <div className="mt-2 flex px-2 text-xs text-slate-400">
