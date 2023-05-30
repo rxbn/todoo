@@ -40,13 +40,13 @@ export const DeleteConfirmation = (props: { hidden: boolean; id: string }) => {
                       <span className="text-xl font-bold">Are you sure?</span>
                       <div className="flex justify-center">
                         <button
-                          className="mr-2 mt-2 h-8 w-full appearance-none rounded-lg border-none bg-white/20 px-2 leading-tight transition-colors duration-200 hover:bg-gray-500 focus:outline-none"
+                          className="mr-2 mt-2 h-8 w-full appearance-none rounded-lg border-none bg-gray-500 px-2 leading-tight transition-colors duration-200 hover:bg-gray-700 focus:outline-none"
                           onClick={() => close()}
                         >
                           No
                         </button>
                         <button
-                          className="mt-2 h-8 w-full appearance-none rounded-lg border-none bg-white/20 px-2 leading-tight transition-colors duration-200 hover:bg-red-500 focus:outline-none"
+                          className="mt-2 h-8 w-full appearance-none  rounded-lg border-none bg-red-500 px-2 leading-tight transition-colors duration-200 hover:bg-red-700 focus:outline-none"
                           onClick={() => deleteTodo({ id: props.id })}
                         >
                           Yes
