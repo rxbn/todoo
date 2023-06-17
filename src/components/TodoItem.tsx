@@ -18,7 +18,7 @@ export const TodoItem = (props: Todo) => {
   const [edit, setEdit] = useState(false);
   const [input, setInput] = useState(props.content);
   const [dueDate, setDueDate] = useState(props.dueDate);
-  const [tags, setTags] = useState(props.tags);
+  const [tags, setTags] = useState(props.tags.map((tag) => tag.name));
   const inputRef = useRef<HTMLInputElement>(null);
 
   const ctx = api.useContext();
@@ -48,9 +48,8 @@ export const TodoItem = (props: Todo) => {
         <li className="border-b-2 border-blue-500 py-2">
           <div className="flex items-center">
             <input
-              className={`mr-3 w-full appearance-none border-none bg-transparent px-2 py-1 leading-tight text-white focus:outline-none ${
-                props.done ? "line-through" : ""
-              }`}
+              className={`mr-3 w-full appearance-none border-none bg-transparent px-2 py-1 leading-tight text-white focus:outline-none ${props.done ? "line-through" : ""
+                }`}
               type="text"
               value={input}
               spellCheck={false}
@@ -117,26 +116,23 @@ export const TodoItem = (props: Todo) => {
             </button>
             <DeleteConfirmation hidden={!props.done} id={props.id} />
           </div>
-          {(tags || dueDate) && !props.done ? (
-            <div className="mt-2 flex px-2 text-xs text-slate-400">
-              {tags && (
+          {(tags.length > 0 || dueDate) && !props.done ? (
+            <div className="mt-2 flex px-2 text-sm text-slate-400">
+              {tags.length > 0 && (
                 <div className="mr-2 inline-flex items-center">
                   <FaTag className="mr-0.5" />
-                  {tags.split(",").map(
-                    (tag, index) =>
-                      tag.trim() !== "" && (
-                        <span
-                          key={index}
-                          className="ml-0.5 rounded-md bg-slate-500 p-0.5 text-black"
-                        >
-                          {tag.trim()}
-                        </span>
-                      )
-                  )}
+                  {tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="ml-0.5 rounded-md bg-slate-500 p-0.5 text-white"
+                    >
+                      {tag}
+                    </span>
+                  ))}
                   {edit && (
                     <FaTimesCircle
                       className="ml-0.5"
-                      onClick={() => setTags("")}
+                      onClick={() => setTags([])}
                     />
                   )}
                 </div>
@@ -144,7 +140,7 @@ export const TodoItem = (props: Todo) => {
               {dueDate && (
                 <div className="inline-flex items-center">
                   <FaCalendar className="mr-1" />
-                  <span className="rounded-md bg-orange-500 p-0.5 text-black">
+                  <span className="rounded-md bg-orange-500 p-0.5 text-white">
                     {dueDate}
                   </span>
                   {edit && (

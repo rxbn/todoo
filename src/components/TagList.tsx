@@ -1,12 +1,24 @@
 import { Popover, Transition } from "@headlessui/react";
-import { type Dispatch, Fragment, type SetStateAction } from "react";
-import { FaTag } from "react-icons/fa";
+import { type Dispatch, Fragment, type SetStateAction, useState } from "react";
+import { FaTag, FaTimesCircle } from "react-icons/fa";
+import { api } from "~/utils/api";
 
 export const TagList = (props: {
-  tags: string;
+  tags: string[];
   hidden: boolean;
-  setTags: Dispatch<SetStateAction<string>>;
+  setTags: Dispatch<SetStateAction<string[]>>;
 }) => {
+  const [input, setInput] = useState("");
+  const searchTags = api.tags.search.useQuery({ search: input });
+  const searchResult = searchTags.data?.map((tag) => tag.name);
+
+  const addTag = (tag: string) => {
+    if (!props.tags.includes(tag)) {
+      props.setTags([...props.tags, tag]);
+      setInput("");
+    }
+  };
+
   return (
     <div className="relative inline-flex">
       <Popover className="relative">
@@ -15,7 +27,7 @@ export const TagList = (props: {
             <Popover.Button
               hidden={props.hidden}
               className={`${open ? "" : "text-opacity-90"}
-              mr-2 flex-shrink-0 rounded border-4 border-slate-500 bg-slate-500 px-2 py-1 text-sm text-white outline-none transition-colors duration-200 hover:border-slate-700 hover:bg-slate-700`}
+            mr-2 flex-shrink-0 rounded border-4 border-slate-500 bg-slate-500 px-2 py-1 text-sm text-white outline-none transition-colors duration-200 hover:border-slate-700 hover:bg-slate-700`}
             >
               <FaTag />
             </Popover.Button>
@@ -37,16 +49,56 @@ export const TagList = (props: {
                         className="mt-2 h-8 w-full appearance-none rounded-lg border-none bg-white/20 px-2 leading-tight focus:outline-none"
                         type="text"
                         aria-label="Set tags"
-                        value={props.tags}
                         autoFocus={true}
-                        onChange={(e) => props.setTags(e.target.value)}
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
                         onKeyDown={(e) => {
-                          if (e.key === "Enter") {
+                          if (e.key === "," || e.key === "Enter") {
                             e.preventDefault();
-                            close();
+                            if (input !== "" && !props.tags.includes(input)) {
+                              props.setTags([...props.tags, input]);
+                              setInput("");
+                            }
                           }
                         }}
                       />
+                      <div className="flex w-full items-center overflow-scroll pt-2">
+                        {props.tags.map((tag, index) => (
+                          <span
+                            key={index}
+                            className="mr-2 flex items-center rounded-md bg-slate-500 p-1 pl-2"
+                          >
+                            {tag}
+                            <FaTimesCircle
+                              className="ml-3"
+                              onClick={() => {
+                                props.setTags(
+                                  props.tags.filter((t) => t !== tag)
+                                );
+                              }}
+                            />
+                          </span>
+                        ))}
+                      </div>
+                      <div className="flex w-full items-center overflow-scroll pt-2">
+                        {searchResult?.map((tag, index) => (
+                          <span
+                            key={index}
+                            className="mr-2 cursor-pointer"
+                            onClick={() => addTag(tag)}
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                      <Popover.Button
+                        className="absolute right-2 top-2 rounded-full p-1 transition-colors duration-200 hover:bg-white/20"
+                        onClick={() => {
+                          close();
+                        }}
+                      >
+                        <FaTimesCircle />
+                      </Popover.Button>
                     </div>
                   </div>
                 )}
