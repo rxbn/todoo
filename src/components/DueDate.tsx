@@ -1,6 +1,11 @@
 import { Popover, Transition } from "@headlessui/react";
 import { type Dispatch, Fragment, type SetStateAction } from "react";
-import { FaCalendar, FaCaretLeft, FaCaretRight } from "react-icons/fa";
+import {
+  FaCalendar,
+  FaCaretLeft,
+  FaCaretRight,
+  FaTimesCircle,
+} from "react-icons/fa";
 import Calendar from "react-calendar";
 import dayjs from "dayjs";
 
@@ -59,6 +64,14 @@ export const DueDate = (props: {
                           close();
                         }}
                       />
+                      <Popover.Button
+                        className="absolute right-2 top-2 rounded-full p-1 transition-colors duration-200 hover:bg-white/20"
+                        onClick={() => {
+                          close();
+                        }}
+                      >
+                        <FaTimesCircle />
+                      </Popover.Button>
                     </div>
                   </div>
                 )}

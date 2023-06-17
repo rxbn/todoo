@@ -6,7 +6,7 @@ import { DueDate } from "./DueDate";
 
 export const NewTodo = () => {
   const [input, setInput] = useState("");
-  const [tags, setTags] = useState("");
+  const [tags, setTags] = useState<string[]>([]);
   const [dueDate, setDueDate] = useState("");
 
   const ctx = api.useContext();
@@ -14,7 +14,7 @@ export const NewTodo = () => {
   const { mutate, isLoading: isCreating } = api.todos.create.useMutation({
     onSuccess: () => {
       setInput("");
-      setTags("");
+      setTags([]);
       setDueDate("");
       void ctx.todos.get.invalidate();
     },
@@ -37,7 +37,7 @@ export const NewTodo = () => {
                 if (e.key === "Enter") {
                   e.preventDefault();
                   if (input !== "") {
-                    mutate({ content: input, tags, dueDate });
+                    mutate({ content: input, dueDate, tags });
                   }
                 }
               }}
@@ -50,39 +50,36 @@ export const NewTodo = () => {
               type="button"
               onClick={() => {
                 if (input !== "") {
-                  mutate({ content: input, tags, dueDate });
+                  mutate({ content: input, dueDate, tags });
                 }
               }}
             >
               <FaPlus />
             </button>
           </div>
-          {tags || dueDate ? (
-            <div className="mt-2 flex px-2 text-xs text-slate-400">
-              {tags && (
+          {tags.length > 0 || dueDate ? (
+            <div className="mt-2 flex px-2 text-sm text-slate-400">
+              {tags.length > 0 && (
                 <div className="mr-2 inline-flex items-center">
                   <FaTag className="mr-0.5" />
-                  {tags.split(",").map(
-                    (tag, index) =>
-                      tag.trim() !== "" && (
-                        <span
-                          key={index}
-                          className="ml-0.5 rounded-md bg-slate-500 p-0.5 text-black"
-                        >
-                          {tag.trim()}
-                        </span>
-                      )
-                  )}
+                  {tags.map((tag, index) => (
+                    <span
+                      key={index}
+                      className="ml-0.5 rounded-md bg-slate-500 p-0.5 text-white"
+                    >
+                      {tag}
+                    </span>
+                  ))}
                   <FaTimesCircle
                     className="ml-0.5"
-                    onClick={() => setTags("")}
+                    onClick={() => setTags([])}
                   />
                 </div>
               )}
               {dueDate && (
                 <div className="inline-flex items-center">
                   <FaCalendar className="mr-1" />
-                  <span className="rounded-md bg-orange-500 p-0.5 text-black">
+                  <span className="rounded-md bg-orange-500 p-0.5 text-white">
                     {dueDate}
                   </span>
                   <FaTimesCircle

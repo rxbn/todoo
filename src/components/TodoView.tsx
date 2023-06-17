@@ -1,6 +1,7 @@
-import type { Todo } from "@prisma/client";
 import { TodoItem } from "./TodoItem";
+import type { RouterOutputs } from "~/utils/api";
 
+type Todo = RouterOutputs["todos"]["get"][number];
 export const TodoView = (props: {
   title: string;
   todos: Array<Todo> | undefined;
