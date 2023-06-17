@@ -10,7 +10,9 @@ export const TagList = (props: {
 }) => {
   const [input, setInput] = useState("");
   const searchTags = api.tags.search.useQuery({ search: input });
-  const searchResult = searchTags.data?.map((tag) => tag.name);
+  const searchResult = searchTags.data
+    ?.filter((tag) => !props.tags.includes(tag.name))
+    .map((tag) => tag.name);
 
   const addTag = (tag: string) => {
     if (!props.tags.includes(tag)) {
@@ -62,15 +64,15 @@ export const TagList = (props: {
                           }
                         }}
                       />
-                      <div className="flex w-full items-center overflow-scroll pt-2">
+                      <div className="flex flex-wrap items-center pt-2">
                         {props.tags.map((tag, index) => (
                           <span
                             key={index}
-                            className="mr-2 flex items-center rounded-md bg-slate-500 p-1 pl-2"
+                            className="mr-2 mt-2 flex cursor-default items-center rounded-md bg-slate-500 p-1 pl-2"
                           >
                             {tag}
                             <FaTimesCircle
-                              className="ml-3"
+                              className="ml-3 cursor-pointer rounded-full transition-colors duration-200 hover:border-red-500 hover:bg-red-500"
                               onClick={() => {
                                 props.setTags(
                                   props.tags.filter((t) => t !== tag)
@@ -80,11 +82,14 @@ export const TagList = (props: {
                           </span>
                         ))}
                       </div>
-                      <div className="flex w-full items-center overflow-scroll pt-2">
+                      <span className="inline-grid pt-2 text-lg font-bold">
+                        Available tags:
+                      </span>
+                      <div className="flex w-full flex-wrap items-center">
                         {searchResult?.map((tag, index) => (
                           <span
                             key={index}
-                            className="mr-2 cursor-pointer"
+                            className="mr-2 mt-2 flex cursor-pointer rounded-md bg-slate-500 p-1 transition-colors duration-200 hover:bg-slate-700"
                             onClick={() => addTag(tag)}
                           >
                             {tag}
