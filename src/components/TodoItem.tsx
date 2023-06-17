@@ -117,9 +117,9 @@ export const TodoItem = (props: Todo) => {
             <DeleteConfirmation hidden={!props.done} id={props.id} />
           </div>
           {(tags.length > 0 || dueDate) && !props.done ? (
-            <div className="mt-2 px-2 text-sm text-slate-400">
+            <div className="mt-2 flex flex-wrap px-2 text-sm text-slate-400">
               {tags.length > 0 && (
-                <div className="mr-2 flex flex-wrap items-center">
+                <div className="mb-0.5 mr-2 flex flex-wrap items-center">
                   <FaTag className="mr-0.5" />
                   {tags.map((tag) => (
                     <span
@@ -138,8 +138,8 @@ export const TodoItem = (props: Todo) => {
                 </div>
               )}
               {dueDate && (
-                <div className="mt-1 flex items-center">
-                  <FaCalendar className="mr-1" />
+                <div className="mb-0.5 flex items-center">
+                  <FaCalendar className="mr-0.5" />
                   <span className="rounded-md bg-orange-500 p-0.5 text-white">
                     {dueDate}
                   </span>
