@@ -36,6 +36,7 @@ export const DueDate = (props: {
                     <div className="relative bg-white/10 p-7 text-white backdrop-blur-md">
                       <span className="text-xl font-bold">Set due date:</span>
                       <Calendar
+                        className="mt-2"
                         value={props.dueDate}
                         onChange={(e) => {
                           if (!e) return;

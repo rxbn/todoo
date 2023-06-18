@@ -1,9 +1,9 @@
 .react-calendar {
-  @apply rounded bg-white/20;
+  @apply rounded bg-white/20 p-2;
 }
 
 .react-calendar button {
-  @apply m-0 border-0 outline-none;
+  @apply outline-none;
 }
 
 .react-calendar button:enabled:hover {
@@ -11,20 +11,20 @@
 }
 
 .react-calendar__navigation {
-  @apply mb-2 mt-2 flex h-11;
+  @apply mb-2 flex h-11 text-lg font-bold;
 }
 
 .react-calendar__navigation button {
-  @apply mt-2 min-w-[44px] bg-none;
+  @apply min-w-[44px] bg-none;
 }
 
 .react-calendar__navigation button:enabled:hover,
 .react-calendar__navigation button:enabled:focus {
-  @apply rounded-full bg-orange-500 transition-colors duration-200;
+  @apply rounded bg-white/20 transition-colors duration-200;
 }
 
 .react-calendar__month-view__weekdays {
-  @apply cursor-default text-center font-bold uppercase decoration-current;
+  @apply cursor-default text-center font-semibold  uppercase decoration-current;
 }
 
 .react-calendar__month-view__weekdays__weekday abbr {
@@ -32,7 +32,7 @@
 }
 
 .react-calendar__month-view__weekdays__weekday {
-  @apply p-0.5;
+  @apply pb-0.5;
 }
 
 .react-calendar__month-view__days__day--weekend {
