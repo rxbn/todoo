@@ -1,11 +1,6 @@
 import { Popover, Transition } from "@headlessui/react";
 import { type Dispatch, Fragment, type SetStateAction } from "react";
-import {
-  FaCalendar,
-  FaCaretLeft,
-  FaCaretRight,
-  FaTimesCircle,
-} from "react-icons/fa";
+import { FaCalendar, FaTimesCircle } from "react-icons/fa";
 import Calendar from "react-calendar";
 import dayjs from "dayjs";
 
@@ -41,21 +36,7 @@ export const DueDate = (props: {
                     <div className="relative bg-white/10 p-7 text-white backdrop-blur-md">
                       <span className="text-xl font-bold">Set due date:</span>
                       <Calendar
-                        className="mt-2 rounded bg-white/20 p-2"
-                        tileClassName="hover:bg-white/20 rounded transition-colors duration-200 py-2 px-2"
                         value={props.dueDate}
-                        nextLabel={
-                          <div className="rounded bg-white/20 p-0.5">
-                            <FaCaretRight />
-                          </div>
-                        }
-                        prevLabel={
-                          <div className="rounded bg-white/20 p-0.5">
-                            <FaCaretLeft />
-                          </div>
-                        }
-                        next2Label={null}
-                        prev2Label={null}
                         onChange={(e) => {
                           if (!e) return;
                           props.setDueDate(
@@ -63,6 +44,7 @@ export const DueDate = (props: {
                           );
                           close();
                         }}
+                        minDetail="year"
                       />
                       <Popover.Button
                         className="absolute right-2 top-2 rounded-full p-1 transition-colors duration-200 hover:bg-white/20"

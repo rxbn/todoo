@@ -1,0 +1,71 @@
+.react-calendar {
+  @apply rounded bg-white/20;
+}
+
+.react-calendar button {
+  @apply m-0 border-0 outline-none;
+}
+
+.react-calendar button:enabled:hover {
+  @apply cursor-pointer;
+}
+
+.react-calendar__navigation {
+  @apply mb-2 mt-2 flex h-11;
+}
+
+.react-calendar__navigation button {
+  @apply mt-2 min-w-[44px] bg-none;
+}
+
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+  @apply rounded-full bg-orange-500 transition-colors duration-200;
+}
+
+.react-calendar__month-view__weekdays {
+  @apply cursor-default text-center font-bold uppercase decoration-current;
+}
+
+.react-calendar__month-view__weekdays__weekday abbr {
+  @apply no-underline;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  @apply p-0.5;
+}
+
+.react-calendar__month-view__days__day--weekend {
+  @apply text-red-300;
+}
+
+.react-calendar__month-view__days__day--neighboringMonth {
+  @apply text-gray-400;
+}
+
+.react-calendar__year-view .react-calendar__tile,
+.react-calendar__decade-view .react-calendar__tile,
+.react-calendar__century-view .react-calendar__tile {
+  @apply px-4 py-4;
+}
+
+.react-calendar__tile {
+  @apply rounded px-2 py-2 transition-colors duration-200 hover:bg-white/20;
+}
+
+.react-calendar__tile:disabled {
+  @apply text-gray-400;
+}
+
+.react-calendar__tile--now {
+  @apply bg-none text-blue-300;
+}
+
+.react-calendar__tile--active {
+  @apply bg-orange-500 text-white;
+}
+
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+  @apply bg-orange-700;
+}
