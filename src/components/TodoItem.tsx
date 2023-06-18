@@ -48,8 +48,9 @@ export const TodoItem = (props: Todo) => {
         <li className="border-b-2 border-blue-500 py-2">
           <div className="flex items-center">
             <input
-              className={`mr-3 w-full appearance-none border-none bg-transparent px-2 py-1 leading-tight text-white focus:outline-none ${props.done ? "line-through" : ""
-                }`}
+              className={`mr-3 w-full appearance-none border-none bg-transparent px-2 py-1 leading-tight text-white focus:outline-none ${
+                props.done ? "line-through" : ""
+              }`}
               type="text"
               value={input}
               spellCheck={false}
