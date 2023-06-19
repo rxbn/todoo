@@ -98,9 +98,7 @@ export const TagList = (props: {
                       </div>
                       <Popover.Button
                         className="absolute right-2 top-2 rounded-full p-1 transition-colors duration-200 hover:bg-white/20"
-                        onClick={() => {
-                          close();
-                        }}
+                        onClick={() => close()}
                       >
                         <FaTimesCircle />
                       </Popover.Button>
