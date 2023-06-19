@@ -15,7 +15,11 @@
 }
 
 .react-calendar__navigation button {
-  @apply min-w-[44px] bg-none;
+  @apply flex-grow;
+}
+
+.react-calendar__navigation__label {
+  @apply w-32;
 }
 
 .react-calendar__navigation button:enabled:hover,
