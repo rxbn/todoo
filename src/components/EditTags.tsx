@@ -1,11 +1,11 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Dispatch, Fragment, SetStateAction } from "react";
+import { Fragment } from "react";
 import { FaPencilAlt, FaTimesCircle, FaTrashAlt } from "react-icons/fa";
 import { api } from "~/utils/api";
 
 export const EditTags = (props: {
   show: boolean;
-  setShowEditTags: Dispatch<SetStateAction<boolean>>;
+  onShowChange: (show: boolean) => void;
 }) => {
   const { data: tags } = api.tags.getAll.useQuery();
 
@@ -23,7 +23,7 @@ export const EditTags = (props: {
       <Dialog
         as="div"
         className="relative z-10"
-        onClose={() => props.setShowEditTags(false)}
+        onClose={() => props.onShowChange(false)}
       >
         <Transition.Child
           as={Fragment}
@@ -84,7 +84,7 @@ export const EditTags = (props: {
                 </div>
                 <button
                   className="absolute right-2 top-2 rounded-full p-1 transition-colors duration-200 hover:bg-white/20"
-                  onClick={() => props.setShowEditTags(false)}
+                  onClick={() => props.onShowChange(false)}
                 >
                   <FaTimesCircle />
                 </button>

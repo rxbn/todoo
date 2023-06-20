@@ -14,6 +14,10 @@ export const TodoApp = (props: { session: SessionContextValue }) => {
 
   const [showEditTags, setShowEditTags] = useState(false);
 
+  const handleShowChange = (newShow: boolean) => {
+    setShowEditTags(newShow);
+  };
+
   return (
     <div>
       <div className="mb-8 text-center">
@@ -39,7 +43,7 @@ export const TodoApp = (props: { session: SessionContextValue }) => {
           <FaSignOutAlt className="inline-flex" />
           <span className="ml-2">Sign Out</span>
         </button>
-        <EditTags show={showEditTags} setShowEditTags={setShowEditTags} />
+        <EditTags show={showEditTags} onShowChange={handleShowChange} />
       </div>
     </div>
   );

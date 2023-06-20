@@ -1,12 +1,12 @@
 import { Popover, Transition } from "@headlessui/react";
-import { type Dispatch, Fragment, type SetStateAction, useState } from "react";
+import { Fragment, useState } from "react";
 import { FaTag, FaTimesCircle } from "react-icons/fa";
 import { api } from "~/utils/api";
 
 export const TagList = (props: {
   tags: string[];
   hidden: boolean;
-  setTags: Dispatch<SetStateAction<string[]>>;
+  onTagChange: (newTags: string[]) => void;
 }) => {
   const [input, setInput] = useState("");
   const searchTags = api.tags.search.useQuery({ search: input });
@@ -16,7 +16,7 @@ export const TagList = (props: {
 
   const addTag = (tag: string) => {
     if (!props.tags.includes(tag)) {
-      props.setTags([...props.tags, tag]);
+      props.onTagChange([...props.tags, tag]);
       setInput("");
     }
   };
@@ -58,7 +58,7 @@ export const TagList = (props: {
                           if (e.key === "," || e.key === "Enter") {
                             e.preventDefault();
                             if (input !== "" && !props.tags.includes(input)) {
-                              props.setTags([...props.tags, input]);
+                              props.onTagChange([...props.tags, input]);
                               setInput("");
                             }
                           }
@@ -74,7 +74,7 @@ export const TagList = (props: {
                             <FaTimesCircle
                               className="ml-3 cursor-pointer rounded-full transition-colors duration-200 hover:border-red-500 hover:bg-red-500"
                               onClick={() => {
-                                props.setTags(
+                                props.onTagChange(
                                   props.tags.filter((t) => t !== tag)
                                 );
                               }}

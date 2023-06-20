@@ -1,5 +1,5 @@
 import { Popover, Transition } from "@headlessui/react";
-import { type Dispatch, Fragment, type SetStateAction } from "react";
+import { Fragment } from "react";
 import { FaCalendar, FaTimesCircle } from "react-icons/fa";
 import Calendar from "react-calendar";
 import dayjs from "dayjs";
@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 export const DueDate = (props: {
   dueDate: string;
   hidden: boolean;
-  setDueDate: Dispatch<SetStateAction<string>>;
+  onDateChange: (newDate: string) => void;
 }) => {
   return (
     <div className="relative inline-flex">
@@ -40,9 +40,10 @@ export const DueDate = (props: {
                         value={props.dueDate}
                         onChange={(e) => {
                           if (!e) return;
-                          props.setDueDate(
-                            dayjs(e.toString()).format("YYYY-MM-DD")
+                          const newDate = dayjs(e.toString()).format(
+                            "YYYY-MM-DD"
                           );
+                          props.onDateChange(newDate);
                           close();
                         }}
                         minDetail="year"

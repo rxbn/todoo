@@ -9,6 +9,10 @@ export const NewTodo = () => {
   const [tags, setTags] = useState<string[]>([]);
   const [dueDate, setDueDate] = useState("");
 
+  const handleDateChange = (newDate: string) => {
+    setDueDate(newDate);
+  };
+
   const ctx = api.useContext();
 
   const { mutate, isLoading: isCreating } = api.todos.create.useMutation({
@@ -20,6 +24,10 @@ export const NewTodo = () => {
       void ctx.tags.getAll.invalidate();
     },
   });
+
+  const handleTagChange = (newTags: string[]) => {
+    setTags(newTags);
+  };
 
   return (
     <div className="flex justify-center">
@@ -44,8 +52,12 @@ export const NewTodo = () => {
               }}
               disabled={isCreating}
             />
-            <TagList hidden={false} tags={tags} setTags={setTags} />
-            <DueDate hidden={false} dueDate={dueDate} setDueDate={setDueDate} />
+            <TagList hidden={false} tags={tags} onTagChange={handleTagChange} />
+            <DueDate
+              hidden={false}
+              dueDate={dueDate}
+              onDateChange={handleDateChange}
+            />
             <button
               className="flex-shrink-0 rounded border-4 border-blue-500 bg-blue-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-blue-700 hover:bg-blue-700"
               type="button"

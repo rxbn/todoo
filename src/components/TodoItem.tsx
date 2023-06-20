@@ -21,6 +21,10 @@ export const TodoItem = (props: Todo) => {
   const [tags, setTags] = useState(props.tags.map((tag) => tag.name));
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const handleDateChange = (newDate: string) => {
+    setDueDate(newDate);
+  };
+
   const ctx = api.useContext();
 
   const { mutate: toggleDone } = api.todos.toggleDone.useMutation({
@@ -28,6 +32,10 @@ export const TodoItem = (props: Todo) => {
       void ctx.todos.get.invalidate();
     },
   });
+
+  const handleTagChange = (newTags: string[]) => {
+    setTags(newTags);
+  };
 
   const { mutate: editTodo } = api.todos.edit.useMutation({
     onSuccess: () => {
@@ -85,8 +93,12 @@ export const TodoItem = (props: Todo) => {
             >
               <FaPencilAlt />
             </button>
-            <TagList hidden={!edit} tags={tags} setTags={setTags} />
-            <DueDate hidden={!edit} dueDate={dueDate} setDueDate={setDueDate} />
+            <TagList hidden={!edit} tags={tags} onTagChange={handleTagChange} />
+            <DueDate
+              hidden={!edit}
+              dueDate={dueDate}
+              onDateChange={handleDateChange}
+            />
             <button
               className="flex-shrink-0 rounded border-4 border-green-500 bg-green-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-green-700 hover:bg-green-700"
               type="button"
