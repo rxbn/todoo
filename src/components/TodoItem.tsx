@@ -32,6 +32,7 @@ export const TodoItem = (props: Todo) => {
   const { mutate: editTodo } = api.todos.edit.useMutation({
     onSuccess: () => {
       void ctx.todos.get.invalidate();
+      void ctx.tags.getAll.invalidate();
     },
   });
 

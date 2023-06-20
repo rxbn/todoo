@@ -17,6 +17,7 @@ export const NewTodo = () => {
       setTags([]);
       setDueDate("");
       void ctx.todos.get.invalidate();
+      void ctx.tags.getAll.invalidate();
     },
   });
 
