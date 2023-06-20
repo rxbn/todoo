@@ -4,7 +4,7 @@ import type { RouterOutputs } from "~/utils/api";
 type Todo = RouterOutputs["todos"]["get"][number];
 export const TodoView = (props: {
   title: string;
-  todos: Array<Todo> | undefined;
+  todos: Todo[] | undefined;
 }) => {
   if (!props.todos) return null;
   if (props.todos.length === 0) return null;

@@ -12,6 +12,22 @@ export const tagRouter = createTRPCRouter({
     return result;
   }),
 
+  getByTodo: protectedProcedure
+    .input(z.object({ todoId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const result = await ctx.prisma.tag.findMany({
+        where: {
+          userId: ctx.session.user.id,
+          todos: {
+            some: {
+              id: input.todoId,
+            },
+          },
+        },
+      });
+      return result;
+    }),
+
   edit: protectedProcedure
     .input(z.object({ id: z.string(), name: z.string() }))
     .mutation(async ({ ctx, input }) => {

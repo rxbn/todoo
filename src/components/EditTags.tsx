@@ -15,6 +15,7 @@ export const EditTags = (props: {
     onSuccess: () => {
       void ctx.tags.getAll.invalidate();
       void ctx.tags.search.invalidate();
+      void ctx.tags.getByTodo.invalidate();
     },
   });
 

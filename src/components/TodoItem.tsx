@@ -14,11 +14,12 @@ import { DueDate } from "./DueDate";
 import { DeleteConfirmation } from "./DeleteConfirmation";
 
 type Todo = RouterOutputs["todos"]["get"][number];
+type Tag = RouterOutputs["tags"]["getByTodo"][number];
 export const TodoItem = (props: Todo) => {
   const [edit, setEdit] = useState(false);
   const [input, setInput] = useState(props.content);
   const [dueDate, setDueDate] = useState(props.dueDate);
-  const [tags, setTags] = useState(props.tags.map((tag) => tag.name));
+  const [tags, setTags] = useState(props.tags);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleDateChange = (newDate: string) => {
@@ -33,7 +34,7 @@ export const TodoItem = (props: Todo) => {
     },
   });
 
-  const handleTagChange = (newTags: string[]) => {
+  const handleTagChange = (newTags: Tag[]) => {
     setTags(newTags);
   };
 
@@ -93,7 +94,11 @@ export const TodoItem = (props: Todo) => {
             >
               <FaPencilAlt />
             </button>
-            <TagList hidden={!edit} tags={tags} onTagChange={handleTagChange} />
+            <TagList
+              hidden={!edit}
+              todoTags={tags}
+              onTagChange={handleTagChange}
+            />
             <DueDate
               hidden={!edit}
               dueDate={dueDate}
@@ -130,19 +135,20 @@ export const TodoItem = (props: Todo) => {
             </button>
             <DeleteConfirmation hidden={!props.done} id={props.id} />
           </div>
-          {(tags.length > 0 || dueDate) && !props.done ? (
+          {((tags && tags.length > 0) || dueDate) && !props.done ? (
             <div className="mt-2 flex flex-wrap px-2 text-sm text-slate-400">
-              {tags.length > 0 && (
+              {tags && tags.length > 0 && (
                 <div className="mb-0.5 mr-2 flex flex-wrap items-center">
                   <FaTag className="mr-0.5" />
-                  {tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="m-0.5 ml-0.5 rounded-md bg-slate-500 p-0.5 text-white"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                  {tags &&
+                    tags.map((tag) => (
+                      <span
+                        key={tag.id}
+                        className="m-0.5 ml-0.5 rounded-md bg-slate-500 p-0.5 text-white"
+                      >
+                        {tag.name}
+                      </span>
+                    ))}
                   {edit && (
                     <FaTimesCircle
                       className="ml-0.5"

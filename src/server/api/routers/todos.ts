@@ -22,37 +22,40 @@ export const todoRouter = createTRPCRouter({
       z.object({
         content: z.string(),
         dueDate: z.string().optional(),
-        tags: z.array(z.string()).optional(),
+        tags: z
+          .array(
+            z.object({
+              name: z.string(),
+              id: z.string().optional(),
+              userId: z.string().optional(),
+            })
+          )
+          .optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const tags = await Promise.all(
-        (input.tags || []).map(async (tagName) => {
-          let tag = await ctx.prisma.tag.findUnique({
-            where: {
-              userId_name: { userId: ctx.session.user.id, name: tagName },
-            },
-          });
-          if (!tag) {
-            tag = await ctx.prisma.tag.create({
-              data: {
-                name: tagName,
-                userId: ctx.session.user.id,
-              },
-            });
-          }
-          return tag;
-        })
-      );
-
       const todo = await ctx.prisma.todo.create({
         data: {
           userId: ctx.session.user.id,
           content: input.content,
           dueDate: input.dueDate,
           tags: {
-            connect: tags.map((tag) => ({ id: tag.id })),
+            connectOrCreate: input.tags?.map((tag) => ({
+              where: {
+                userId_name: {
+                  userId: ctx.session.user.id,
+                  name: tag.name,
+                },
+              },
+              create: {
+                name: tag.name,
+                userId: ctx.session.user.id,
+              },
+            })),
           },
+        },
+        include: {
+          tags: true,
         },
       });
 
@@ -65,53 +68,59 @@ export const todoRouter = createTRPCRouter({
         id: z.string(),
         content: z.string(),
         dueDate: z.string().optional(),
-        tags: z.array(z.string()).optional(),
+        tags: z
+          .array(
+            z.object({
+              name: z.string(),
+              id: z.string().optional(),
+              userId: z.string().optional(),
+            })
+          )
+          .optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const tags = await Promise.all(
-        (input.tags || []).map(async (tagName) => {
-          let tag = await ctx.prisma.tag.findUnique({
+      const todo = await ctx.prisma.todo
+        .update({
+          where: {
+            id: input.id,
+          },
+          data: {
+            content: input.content,
+            dueDate: input.dueDate,
+            tags: {
+              connectOrCreate: input.tags?.map((tag) => ({
+                where: {
+                  userId_name: {
+                    userId: ctx.session.user.id,
+                    name: tag.name,
+                  },
+                },
+                create: {
+                  name: tag.name,
+                  userId: ctx.session.user.id,
+                },
+              })),
+            },
+          },
+          include: {
+            tags: true,
+          },
+        })
+        .then(async () => {
+          await ctx.prisma.todo.update({
             where: {
-              userId_name: { userId: ctx.session.user.id, name: tagName },
+              id: input.id,
+            },
+            data: {
+              tags: {
+                set: input.tags?.map((tag) => ({
+                  id: tag.id,
+                })),
+              },
             },
           });
-          if (!tag) {
-            tag = await ctx.prisma.tag.create({
-              data: {
-                name: tagName,
-                userId: ctx.session.user.id,
-              },
-            });
-          }
-          return tag;
-        })
-      );
-
-      const currentTodo = await ctx.prisma.todo.findUnique({
-        where: { id: input.id },
-        include: { tags: true },
-      });
-
-      if (!currentTodo) throw new Error("Todo not found");
-
-      const disconnectIds = currentTodo.tags
-        .map((tag) => tag.id)
-        .filter((id) => !tags.some((tag) => tag.id === id));
-
-      const todo = await ctx.prisma.todo.update({
-        where: {
-          id: input.id,
-        },
-        data: {
-          content: input.content,
-          dueDate: input.dueDate,
-          tags: {
-            connect: tags.map((tag) => ({ id: tag.id })),
-            disconnect: disconnectIds.map((id) => ({ id })),
-          },
-        },
-      });
+        });
 
       return todo;
     }),

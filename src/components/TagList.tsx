@@ -1,25 +1,35 @@
 import { Popover, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { FaTag, FaTimesCircle } from "react-icons/fa";
-import { api } from "~/utils/api";
+import { RouterOutputs, api } from "~/utils/api";
 
+type Tag = RouterOutputs["tags"]["getByTodo"][number];
 export const TagList = (props: {
-  tags: string[];
+  todoTags: Tag[];
   hidden: boolean;
-  onTagChange: (newTags: string[]) => void;
+  onTagChange: (newTags: Tag[]) => void;
 }) => {
   const [input, setInput] = useState("");
-  const searchTags = api.tags.search.useQuery({ search: input });
-  const searchResult = searchTags.data
-    ?.filter((tag) => !props.tags.includes(tag.name))
-    .map((tag) => tag.name);
 
-  const addTag = (tag: string) => {
-    if (!props.tags.includes(tag)) {
-      props.onTagChange([...props.tags, tag]);
+  const filterTags = (tags: Tag[], search: string, existingTags: Tag[]) => {
+    const existingTagNames = new Set(existingTags.map((tag) => tag.name));
+    return tags.filter(
+      (tag) => tag.name.includes(search) && !existingTagNames.has(tag.name)
+    );
+  };
+
+  const { data: tags, isLoading } = api.tags.getAll.useQuery();
+
+  const searchResult = tags && filterTags(tags, input, props.todoTags);
+
+  const addTag = (tag: Tag) => {
+    if (!props.todoTags.includes(tag)) {
+      props.onTagChange([...props.todoTags, tag]);
       setInput("");
     }
   };
+
+  if (isLoading) return null;
 
   return (
     <div className="relative inline-flex">
@@ -57,25 +67,31 @@ export const TagList = (props: {
                         onKeyDown={(e) => {
                           if (e.key === "," || e.key === "Enter") {
                             e.preventDefault();
-                            if (input !== "" && !props.tags.includes(input)) {
-                              props.onTagChange([...props.tags, input]);
+                            if (
+                              input !== "" &&
+                              !props.todoTags.map((t) => t.name).includes(input)
+                            ) {
+                              props.onTagChange([
+                                ...props.todoTags,
+                                { name: input, id: "", userId: "" },
+                              ]);
                               setInput("");
                             }
                           }
                         }}
                       />
                       <div className="flex flex-wrap items-center pt-2">
-                        {props.tags.map((tag, index) => (
+                        {props.todoTags.map((tag) => (
                           <span
-                            key={index}
+                            key={tag.id}
                             className="mr-2 mt-2 flex cursor-default items-center rounded-md bg-slate-500 p-1 pl-2"
                           >
-                            {tag}
+                            {tag.name}
                             <FaTimesCircle
                               className="ml-3 cursor-pointer rounded-full transition-colors duration-200 hover:border-red-500 hover:bg-red-500"
                               onClick={() => {
                                 props.onTagChange(
-                                  props.tags.filter((t) => t !== tag)
+                                  props.todoTags.filter((t) => t !== tag)
                                 );
                               }}
                             />
@@ -86,13 +102,13 @@ export const TagList = (props: {
                         Available tags:
                       </span>
                       <div className="flex w-full flex-wrap items-center">
-                        {searchResult?.map((tag, index) => (
+                        {searchResult?.map((tag) => (
                           <span
-                            key={index}
+                            key={tag.id}
                             className="mr-2 mt-2 flex cursor-pointer rounded-md bg-slate-500 p-1 transition-colors duration-200 hover:bg-slate-700"
                             onClick={() => addTag(tag)}
                           >
-                            {tag}
+                            {tag.name}
                           </span>
                         ))}
                       </div>

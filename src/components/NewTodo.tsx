@@ -1,16 +1,20 @@
 import { useState } from "react";
 import { FaCalendar, FaPlus, FaTag, FaTimesCircle } from "react-icons/fa";
-import { api } from "~/utils/api";
+import { RouterOutputs, api } from "~/utils/api";
 import { TagList } from "./TagList";
 import { DueDate } from "./DueDate";
 
+type Tag = RouterOutputs["tags"]["getAll"][number];
 export const NewTodo = () => {
   const [input, setInput] = useState("");
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<Tag[]>([]);
   const [dueDate, setDueDate] = useState("");
 
   const handleDateChange = (newDate: string) => {
     setDueDate(newDate);
+  };
+  const handleTagChange = (newTags: Tag[]) => {
+    setTags(newTags);
   };
 
   const ctx = api.useContext();
@@ -21,13 +25,8 @@ export const NewTodo = () => {
       setTags([]);
       setDueDate("");
       void ctx.todos.get.invalidate();
-      void ctx.tags.getAll.invalidate();
     },
   });
-
-  const handleTagChange = (newTags: string[]) => {
-    setTags(newTags);
-  };
 
   return (
     <div className="flex justify-center">
@@ -52,7 +51,11 @@ export const NewTodo = () => {
               }}
               disabled={isCreating}
             />
-            <TagList hidden={false} tags={tags} onTagChange={handleTagChange} />
+            <TagList
+              hidden={false}
+              todoTags={tags}
+              onTagChange={handleTagChange}
+            />
             <DueDate
               hidden={false}
               dueDate={dueDate}
@@ -75,12 +78,12 @@ export const NewTodo = () => {
               {tags.length > 0 && (
                 <div className="mb-0.5 mr-2 flex flex-wrap items-center">
                   <FaTag className="mr-0.5" />
-                  {tags.map((tag, index) => (
+                  {tags.map((tag) => (
                     <span
-                      key={index}
+                      key={tag.id}
                       className="m-0.5 ml-0.5 rounded-md bg-slate-500 p-0.5 text-white"
                     >
-                      {tag}
+                      {tag.name}
                     </span>
                   ))}
                   <FaTimesCircle
