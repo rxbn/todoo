@@ -123,9 +123,11 @@ export const TagList = (props: {
                           </span>
                         ))}
                       </div>
-                      <span className="inline-grid pt-2 text-lg font-bold">
-                        Available tags:
-                      </span>
+                      {searchResult && searchResult.length > 0 && (
+                        <span className="inline-grid pt-2 text-lg font-bold">
+                          Available tags:
+                        </span>
+                      )}
                       <div className="flex w-full flex-wrap items-center">
                         {searchResult?.map((tag) => (
                           <span
