@@ -107,17 +107,21 @@ export const todoRouter = createTRPCRouter({
             tags: true,
           },
         })
-        .then(async () => {
-          await ctx.prisma.todo.update({
+        .then((todo) => {
+          return ctx.prisma.todo.update({
             where: {
-              id: input.id,
+              id: todo.id,
             },
             data: {
               tags: {
-                set: input.tags?.map((tag) => ({
-                  id: tag.id,
-                })),
+                disconnect: todo.tags.filter(
+                  (tag) =>
+                    !input.tags?.find((inputTag) => inputTag.name === tag.name)
+                ),
               },
+            },
+            include: {
+              tags: true,
             },
           });
         });

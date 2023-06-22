@@ -19,24 +19,34 @@ export const TodoItem = (props: Todo) => {
   const [edit, setEdit] = useState(false);
   const [input, setInput] = useState(props.content);
   const [dueDate, setDueDate] = useState(props.dueDate);
-  const [tags, setTags] = useState(props.tags);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleDateChange = (newDate: string) => {
     setDueDate(newDate);
   };
 
+  const handleTagChange = (newTags: Tag[]) => {
+    setTags(newTags);
+  };
+
   const ctx = api.useContext();
+
+  const [tags, setTags] = useState<Tag[]>();
+  const { data: todoTags } = api.tags.getByTodo.useQuery({
+    todoId: props.id,
+  });
+
+  useEffect(() => {
+    if (todoTags) {
+      setTags(todoTags);
+    }
+  }, [todoTags]);
 
   const { mutate: toggleDone } = api.todos.toggleDone.useMutation({
     onSuccess: () => {
       void ctx.todos.get.invalidate();
     },
   });
-
-  const handleTagChange = (newTags: Tag[]) => {
-    setTags(newTags);
-  };
 
   const { mutate: editTodo } = api.todos.edit.useMutation({
     onSuccess: () => {
@@ -52,6 +62,7 @@ export const TodoItem = (props: Todo) => {
     }
   }, [edit]);
 
+  if (!tags) return null;
   return (
     <div className="flex justify-center">
       <ul className="w-full max-w-lg">
