@@ -9,9 +9,8 @@ env:
   DATABASE_URL: https://fake.com
   NEXTAUTH_SECRET: fake
   NEXTAUTH_URL: http://localhost:3000
-  KEYCLOAK_CLIENT_ID: fake
-  KEYCLOAK_CLIENT_SECRET: fake
-  KEYCLOAK_ISSUER: https://fake.com
+  GITHUB_CLIENT_ID: fake
+  GITHUB_CLIENT_SECRET: fake
 
 jobs:
   lint:
