@@ -4,11 +4,10 @@ import {
   type NextAuthOptions,
   type DefaultSession,
 } from "next-auth";
-import KeycloakProvider from "next-auth/providers/keycloak";
+import GitHubProvider from "next-auth/providers/github";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
-import type { Adapter } from "next-auth/adapters";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -33,15 +32,6 @@ declare module "next-auth" {
 
 const prismaAdapter = PrismaAdapter(prisma);
 
-const MyAdapter: Adapter<boolean> = {
-  ...prismaAdapter,
-  linkAccount: (account) => {
-    account["not_before_policy"] = account["not-before-policy"];
-    delete account["not-before-policy"];
-    return prismaAdapter.linkAccount(account);
-  },
-};
-
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
  *
@@ -57,12 +47,11 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   },
-  adapter: MyAdapter,
+  adapter: prismaAdapter,
   providers: [
-    KeycloakProvider({
-      clientId: env.KEYCLOAK_CLIENT_ID,
-      clientSecret: env.KEYCLOAK_CLIENT_SECRET,
-      issuer: env.KEYCLOAK_ISSUER,
+    GitHubProvider({
+      clientId: env.GITHUB_CLIENT_ID,
+      clientSecret: env.GITHUB_CLIENT_SECRET,
     }),
     /**
      * ...add more providers here.
