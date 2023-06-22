@@ -23,7 +23,15 @@ const MyApp: AppType<{ session: Session | null }> = ({
           <meta name="theme-color" content="#3b82f6" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <Toaster position="bottom-center" />
+        <Toaster
+          position="top-center"
+          toastOptions={{
+            style: {
+              background: "#333",
+              color: "#fff",
+            },
+          }}
+        />
         <h1 className="pb-3 pt-3 text-center text-4xl font-bold">ToDoo</h1>
         <Component {...pageProps} />
       </SessionProvider>
