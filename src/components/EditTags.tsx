@@ -1,6 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { FaPencilAlt, FaSave, FaTimesCircle, FaTrashAlt } from "react-icons/fa";
+import { toast } from "react-hot-toast";
 import { type RouterOutputs, api } from "~/utils/api";
 
 type Tag = RouterOutputs["tags"]["getAll"][number];
@@ -24,6 +25,10 @@ const EditTagItem = (tag: Tag) => {
       void ctx.tags.getAll.invalidate();
       void ctx.tags.search.invalidate();
       void ctx.tags.getByTodo.invalidate();
+    },
+    onError: () => {
+      toast.error("Tag name must be unique!");
+      setInput(tag.name);
     },
   });
 

@@ -8,6 +8,7 @@ import "~/styles/calendar.css";
 import "~/styles/globals.css";
 import Head from "next/head";
 import { ThemeProvider } from "next-themes";
+import { Toaster } from "react-hot-toast";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -22,6 +23,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
           <meta name="theme-color" content="#3b82f6" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
+        <Toaster position="bottom-center" />
         <h1 className="pb-3 pt-3 text-center text-4xl font-bold">ToDoo</h1>
         <Component {...pageProps} />
       </SessionProvider>
