@@ -61,6 +61,7 @@ export const EditTags = (props: {
                     tags.map((tag) => (
                       <div className="mb-2 flex">
                         <input
+                          id={tag.id}
                           className="mr-2 w-full rounded-md bg-slate-500 px-2 py-1"
                           type="text"
                           value={tag.name}

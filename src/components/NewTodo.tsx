@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaCalendar, FaPlus, FaTag, FaTimesCircle } from "react-icons/fa";
-import { RouterOutputs, api } from "~/utils/api";
+import { type RouterOutputs, api } from "~/utils/api";
 import { TagList } from "./TagList";
 import { DueDate } from "./DueDate";
 

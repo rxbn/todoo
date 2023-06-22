@@ -1,7 +1,7 @@
 import { Popover, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { FaTag, FaTimesCircle } from "react-icons/fa";
-import { RouterOutputs, api } from "~/utils/api";
+import { type RouterOutputs, api } from "~/utils/api";
 
 type Tag = RouterOutputs["tags"]["getByTodo"][number];
 export const TagList = (props: {
@@ -80,8 +80,22 @@ export const TagList = (props: {
                             e.preventDefault();
                             if (input === "") return;
 
-                            if (tags?.map((t) => t.name).includes(input)) {
+                            if (
+                              props.todoTags.map((t) => t.name).includes(input)
+                            ) {
+                              addTag(
+                                props.todoTags.find((t) => t.name === input)!
+                              );
+                              setInput("");
+                              return;
+                            }
+
+                            if (
+                              tags &&
+                              tags.map((t) => t.name).includes(input)
+                            ) {
                               addTag(tags.find((t) => t.name === input)!);
+                              setInput("");
                               return;
                             }
 

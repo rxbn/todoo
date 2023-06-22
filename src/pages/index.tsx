@@ -8,10 +8,9 @@ const Home: NextPage = () => {
 
   return (
     <main>
-      {session.status === "unauthenticated" ? (
-        <LoginScreen />
-      ) : (
-        <TodoApp session={session} />
+      {session.status === "unauthenticated" && <LoginScreen />}
+      {session.status === "authenticated" && (
+        <TodoApp userName={session.data.user.name} />
       )}
     </main>
   );

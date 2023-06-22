@@ -1,4 +1,4 @@
-import { type SessionContextValue, signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { api } from "~/utils/api";
 import { NewTodo } from "./NewTodo";
 import { TodoView } from "./TodoView";
@@ -6,9 +6,7 @@ import { FaSignOutAlt, FaTag } from "react-icons/fa";
 import { useState } from "react";
 import { EditTags } from "./EditTags";
 
-export const TodoApp = (props: { session: SessionContextValue }) => {
-  if (!props.session.data) return null;
-
+export const TodoApp = (props: { userName: string | null | undefined }) => {
   const { data: incompleteTodos } = api.todos.get.useQuery({ done: false });
   const { data: completedTodos } = api.todos.get.useQuery({ done: true });
 
@@ -20,9 +18,7 @@ export const TodoApp = (props: { session: SessionContextValue }) => {
 
   return (
     <div>
-      <div className="mb-8 text-center">
-        Welcome, {props.session.data.user.name}!
-      </div>
+      <div className="mb-8 text-center">Welcome, {props.userName}!</div>
       <NewTodo />
       <TodoView title="Open" todos={incompleteTodos} />
       <TodoView title="Completed" todos={completedTodos} />
