@@ -12,6 +12,7 @@ import { type RouterOutputs, api } from "~/utils/api";
 import { TagList } from "./TagList";
 import { DueDate } from "./DueDate";
 import { DeleteConfirmation } from "./DeleteConfirmation";
+import toast from "react-hot-toast";
 
 type Todo = RouterOutputs["todos"]["get"][number];
 type Tag = RouterOutputs["tags"]["getByTodo"][number];
@@ -82,21 +83,27 @@ export const TodoItem = (props: Todo) => {
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   e.preventDefault();
-                  if (input !== "") {
-                    editTodo({
-                      id: props.id,
-                      content: input,
-                      dueDate,
-                      tags: tags.map((tag) => tag.id),
-                    });
-                    if (inputRef.current) {
-                      inputRef.current.setSelectionRange(
-                        inputRef.current.value.length,
-                        inputRef.current.value.length
-                      );
-                    }
-                    setEdit(false);
+                  if (input.trim() === "") {
+                    toast.error("Todo can't be empty");
+                    setInput("");
+                    return;
                   }
+
+                  editTodo({
+                    id: props.id,
+                    content: input.trim(),
+                    dueDate,
+                    tags: tags.map((tag) => tag.id),
+                  });
+
+                  if (inputRef.current) {
+                    inputRef.current.setSelectionRange(
+                      inputRef.current.value.length,
+                      inputRef.current.value.length
+                    );
+                  }
+                  setInput(input.trim());
+                  setEdit(false);
                 }
               }}
               readOnly={!edit}
@@ -125,15 +132,20 @@ export const TodoItem = (props: Todo) => {
               className="flex-shrink-0 rounded border-4 border-green-500 bg-green-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-green-700 hover:bg-green-700"
               type="button"
               onClick={() => {
-                if (input !== "") {
-                  editTodo({
-                    id: props.id,
-                    content: input,
-                    dueDate,
-                    tags: tags.map((tag) => tag.id),
-                  });
-                  setEdit(false);
+                if (input.trim() === "") {
+                  toast.error("Todo can't be empty");
+                  setInput("");
+                  return;
                 }
+
+                editTodo({
+                  id: props.id,
+                  content: input.trim(),
+                  dueDate,
+                  tags: tags.map((tag) => tag.id),
+                });
+                setInput(input.trim());
+                setEdit(false);
               }}
               hidden={!edit}
             >

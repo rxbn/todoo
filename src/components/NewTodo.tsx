@@ -3,6 +3,7 @@ import { FaCalendar, FaPlus, FaTag, FaTimesCircle } from "react-icons/fa";
 import { type RouterOutputs, api } from "~/utils/api";
 import { TagList } from "./TagList";
 import { DueDate } from "./DueDate";
+import toast from "react-hot-toast";
 
 type Tag = RouterOutputs["tags"]["getAll"][number];
 export const NewTodo = () => {
@@ -44,13 +45,17 @@ export const NewTodo = () => {
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   e.preventDefault();
-                  if (input !== "") {
-                    mutate({
-                      content: input,
-                      dueDate,
-                      tags: tags.map((tag) => tag.id),
-                    });
+                  if (input.trim() === "") {
+                    toast.error("Todo can't be empty");
+                    setInput("");
+                    return;
                   }
+
+                  mutate({
+                    content: input.trim(),
+                    dueDate,
+                    tags: tags.map((tag) => tag.id),
+                  });
                 }
               }}
               disabled={isCreating}
@@ -69,13 +74,17 @@ export const NewTodo = () => {
               className="flex-shrink-0 rounded border-4 border-blue-500 bg-blue-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-blue-700 hover:bg-blue-700"
               type="button"
               onClick={() => {
-                if (input !== "") {
-                  mutate({
-                    content: input,
-                    dueDate,
-                    tags: tags.map((tag) => tag.id),
-                  });
+                if (input.trim() === "") {
+                  toast.error("Todo can't be empty");
+                  setInput("");
+                  return;
                 }
+
+                mutate({
+                  content: input.trim(),
+                  dueDate,
+                  tags: tags.map((tag) => tag.id),
+                });
               }}
             >
               <FaPlus />

@@ -1,6 +1,7 @@
 import { Popover, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { FaTag, FaTimesCircle } from "react-icons/fa";
+import { toast } from "react-hot-toast";
 import { type RouterOutputs, api } from "~/utils/api";
 
 type Tag = RouterOutputs["tags"]["getByTodo"][number];
@@ -14,7 +15,8 @@ export const TagList = (props: {
   const filterTags = (tags: Tag[], search: string, existingTags: Tag[]) => {
     const existingTagNames = new Set(existingTags.map((tag) => tag.name));
     return tags.filter(
-      (tag) => tag.name.includes(search) && !existingTagNames.has(tag.name)
+      (tag) =>
+        tag.name.includes(search.trim()) && !existingTagNames.has(tag.name)
     );
   };
 
@@ -78,21 +80,24 @@ export const TagList = (props: {
                         onKeyDown={(e) => {
                           if (e.key === "," || e.key === "Enter") {
                             e.preventDefault();
-                            if (input === "") return;
-                            if (input === ",") {
+                            if (input.trim() === "") {
+                              toast.error("Tag name can't be empty");
                               setInput("");
                               return;
                             }
 
                             if (
-                              props.todoTags.map((t) => t.name).includes(input)
+                              props.todoTags
+                                .map((t) => t.name)
+                                .includes(input.trim())
                             ) {
+                              toast.error("Tag already set");
                               setInput("");
                               return;
                             }
 
                             const existingTag = tags?.find(
-                              (t) => t.name === input
+                              (t) => t.name === input.trim()
                             );
                             if (existingTag) {
                               addTag(existingTag);
@@ -100,7 +105,7 @@ export const TagList = (props: {
                               return;
                             }
 
-                            createTag({ name: input });
+                            createTag({ name: input.trim() });
                           }
                         }}
                         disabled={isCreating}
