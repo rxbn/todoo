@@ -10,10 +10,10 @@ dependencies:
     version: 1.7.14(react-dom@18.2.0)(react@18.2.0)
   '@next-auth/prisma-adapter':
     specifier: ^1.0.5
-    version: 1.0.5(@prisma/client@4.16.0)(next-auth@4.21.0)
+    version: 1.0.5(@prisma/client@4.16.1)(next-auth@4.21.0)
   '@prisma/client':
-    specifier: ^4.16.0
-    version: 4.16.0(prisma@4.16.0)
+    specifier: ^4.16.1
+    version: 4.16.1(prisma@4.16.0)
   '@t3-oss/env-nextjs':
     specifier: ^0.4.0
     version: 0.4.0(typescript@5.0.2)(zod@3.21.4)
@@ -227,13 +227,13 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.14
     dev: true
 
-  /@next-auth/prisma-adapter@1.0.5(@prisma/client@4.16.0)(next-auth@4.21.0):
+  /@next-auth/prisma-adapter@1.0.5(@prisma/client@4.16.1)(next-auth@4.21.0):
     resolution: {integrity: sha512-VqMS11IxPXrPGXw6Oul6jcyS/n8GLOWzRMrPr3EMdtD6eOalM6zz05j08PcNiis8QzkfuYnCv49OvufTuaEwYQ==}
     peerDependencies:
       '@prisma/client': '>=2.26.0 || >=3'
       next-auth: ^4
     dependencies:
-      '@prisma/client': 4.16.0(prisma@4.16.0)
+      '@prisma/client': 4.16.1(prisma@4.16.0)
       next-auth: 4.21.0(next@13.4.1)(react-dom@18.2.0)(react@18.2.0)
     dev: false
 
@@ -365,8 +365,8 @@ packages:
       tslib: 2.5.2
     dev: true
 
-  /@prisma/client@4.16.0(prisma@4.16.0):
-    resolution: {integrity: sha512-CBD+5IdZPiavhLkQokvsz1uz4r9ppixaqY/ajybWs4WXNnsDVMBKEqN3BiPzpSo79jiy22VKj/67pqt4VwIg9w==}
+  /@prisma/client@4.16.1(prisma@4.16.0):
+    resolution: {integrity: sha512-CoDHu7Bt+NuDo40ijoeHP79EHtECsPBTy3yte5Yo3op8TqXt/kV0OT5OrsWewKvQGKFMHhYQ+ePed3zzjYdGAw==}
     engines: {node: '>=14.17'}
     requiresBuild: true
     peerDependencies:
