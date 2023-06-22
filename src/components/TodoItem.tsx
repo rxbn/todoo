@@ -52,6 +52,7 @@ export const TodoItem = (props: Todo) => {
     onSuccess: () => {
       void ctx.todos.get.invalidate();
       void ctx.tags.getAll.invalidate();
+      void ctx.tags.getByTodo.invalidate();
     },
   });
 
@@ -82,7 +83,12 @@ export const TodoItem = (props: Todo) => {
                 if (e.key === "Enter") {
                   e.preventDefault();
                   if (input !== "") {
-                    editTodo({ id: props.id, content: input, dueDate, tags });
+                    editTodo({
+                      id: props.id,
+                      content: input,
+                      dueDate,
+                      tags: tags.map((tag) => tag.id),
+                    });
                     if (inputRef.current) {
                       inputRef.current.setSelectionRange(
                         inputRef.current.value.length,
@@ -120,7 +126,12 @@ export const TodoItem = (props: Todo) => {
               type="button"
               onClick={() => {
                 if (input !== "") {
-                  editTodo({ id: props.id, content: input, dueDate, tags });
+                  editTodo({
+                    id: props.id,
+                    content: input,
+                    dueDate,
+                    tags: tags.map((tag) => tag.id),
+                  });
                   setEdit(false);
                 }
               }}

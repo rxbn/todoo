@@ -18,7 +18,18 @@ export const TagList = (props: {
     );
   };
 
+  const ctx = api.useContext();
+
   const { data: tags, isLoading } = api.tags.getAll.useQuery();
+
+  const { mutate: createTag, isLoading: isCreating } =
+    api.tags.create.useMutation({
+      onSuccess(data) {
+        void ctx.tags.getAll.invalidate();
+        props.onTagChange([...props.todoTags, data]);
+        setInput("");
+      },
+    });
 
   const searchResult = tags && filterTags(tags, input, props.todoTags);
 
@@ -67,18 +78,17 @@ export const TagList = (props: {
                         onKeyDown={(e) => {
                           if (e.key === "," || e.key === "Enter") {
                             e.preventDefault();
-                            if (
-                              input !== "" &&
-                              !props.todoTags.map((t) => t.name).includes(input)
-                            ) {
-                              props.onTagChange([
-                                ...props.todoTags,
-                                { name: input, id: "", userId: "" },
-                              ]);
-                              setInput("");
+                            if (input === "") return;
+
+                            if (tags?.map((t) => t.name).includes(input)) {
+                              addTag(tags.find((t) => t.name === input)!);
+                              return;
                             }
+
+                            createTag({ name: input });
                           }
                         }}
+                        disabled={isCreating}
                       />
                       <div className="flex flex-wrap items-center pt-2">
                         {props.todoTags.map((tag) => (

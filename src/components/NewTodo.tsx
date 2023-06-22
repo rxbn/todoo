@@ -45,7 +45,11 @@ export const NewTodo = () => {
                 if (e.key === "Enter") {
                   e.preventDefault();
                   if (input !== "") {
-                    mutate({ content: input, dueDate, tags });
+                    mutate({
+                      content: input,
+                      dueDate,
+                      tags: tags.map((tag) => tag.id),
+                    });
                   }
                 }
               }}
@@ -66,7 +70,11 @@ export const NewTodo = () => {
               type="button"
               onClick={() => {
                 if (input !== "") {
-                  mutate({ content: input, dueDate, tags });
+                  mutate({
+                    content: input,
+                    dueDate,
+                    tags: tags.map((tag) => tag.id),
+                  });
                 }
               }}
             >

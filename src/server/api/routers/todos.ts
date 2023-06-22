@@ -10,9 +10,6 @@ export const todoRouter = createTRPCRouter({
           userId: ctx.session.user.id,
           done: input.done,
         },
-        include: {
-          tags: true,
-        },
       });
       return todos;
     }),
@@ -22,15 +19,7 @@ export const todoRouter = createTRPCRouter({
       z.object({
         content: z.string(),
         dueDate: z.string().optional(),
-        tags: z
-          .array(
-            z.object({
-              name: z.string(),
-              id: z.string().optional(),
-              userId: z.string().optional(),
-            })
-          )
-          .optional(),
+        tags: z.array(z.string()).optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -40,17 +29,8 @@ export const todoRouter = createTRPCRouter({
           content: input.content,
           dueDate: input.dueDate,
           tags: {
-            connectOrCreate: input.tags?.map((tag) => ({
-              where: {
-                userId_name: {
-                  userId: ctx.session.user.id,
-                  name: tag.name,
-                },
-              },
-              create: {
-                name: tag.name,
-                userId: ctx.session.user.id,
-              },
+            connect: input.tags?.map((tag) => ({
+              id: tag,
             })),
           },
         },
@@ -68,63 +48,27 @@ export const todoRouter = createTRPCRouter({
         id: z.string(),
         content: z.string(),
         dueDate: z.string().optional(),
-        tags: z
-          .array(
-            z.object({
-              name: z.string(),
-              id: z.string().optional(),
-              userId: z.string().optional(),
-            })
-          )
-          .optional(),
+        tags: z.array(z.string()).optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const todo = await ctx.prisma.todo
-        .update({
-          where: {
-            id: input.id,
+      const todo = await ctx.prisma.todo.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          content: input.content,
+          dueDate: input.dueDate,
+          tags: {
+            set: input.tags?.map((tag) => ({
+              id: tag,
+            })),
           },
-          data: {
-            content: input.content,
-            dueDate: input.dueDate,
-            tags: {
-              connectOrCreate: input.tags?.map((tag) => ({
-                where: {
-                  userId_name: {
-                    userId: ctx.session.user.id,
-                    name: tag.name,
-                  },
-                },
-                create: {
-                  name: tag.name,
-                  userId: ctx.session.user.id,
-                },
-              })),
-            },
-          },
-          include: {
-            tags: true,
-          },
-        })
-        .then((todo) => {
-          return ctx.prisma.todo.update({
-            where: {
-              id: todo.id,
-            },
-            data: {
-              tags: {
-                disconnect: todo.tags.filter(
-                  (tag) =>
-                    !input.tags?.find((inputTag) => inputTag.name === tag.name)
-                ),
-              },
-            },
-            include: {
-              tags: true,
-            },
-          });
-        });
+        },
+        include: {
+          tags: true,
+        },
+      });
 
       return todo;
     }),

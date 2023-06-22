@@ -28,6 +28,19 @@ export const tagRouter = createTRPCRouter({
       return result;
     }),
 
+  create: protectedProcedure
+    .input(z.object({ name: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const tag = await ctx.prisma.tag.create({
+        data: {
+          name: input.name,
+          userId: ctx.session.user.id,
+        },
+      });
+
+      return tag;
+    }),
+
   edit: protectedProcedure
     .input(z.object({ id: z.string(), name: z.string() }))
     .mutation(async ({ ctx, input }) => {
