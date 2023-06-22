@@ -79,22 +79,23 @@ export const TagList = (props: {
                           if (e.key === "," || e.key === "Enter") {
                             e.preventDefault();
                             if (input === "") return;
-
-                            if (
-                              props.todoTags.map((t) => t.name).includes(input)
-                            ) {
-                              addTag(
-                                props.todoTags.find((t) => t.name === input)!
-                              );
+                            if (input === ",") {
                               setInput("");
                               return;
                             }
 
                             if (
-                              tags &&
-                              tags.map((t) => t.name).includes(input)
+                              props.todoTags.map((t) => t.name).includes(input)
                             ) {
-                              addTag(tags.find((t) => t.name === input)!);
+                              setInput("");
+                              return;
+                            }
+
+                            const existingTag = tags?.find(
+                              (t) => t.name === input
+                            );
+                            if (existingTag) {
+                              addTag(existingTag);
                               setInput("");
                               return;
                             }

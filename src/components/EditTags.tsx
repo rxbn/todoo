@@ -59,9 +59,9 @@ export const EditTags = (props: {
                 <div className="mt-2">
                   {tags && tags.length > 0 ? (
                     tags.map((tag) => (
-                      <div className="mb-2 flex">
+                      <div key={tag.id} className="mb-2 flex">
                         <input
-                          id={tag.id}
+                          key={tag.id}
                           className="mr-2 w-full rounded-md bg-slate-500 px-2 py-1"
                           type="text"
                           value={tag.name}
