@@ -147,7 +147,7 @@ export const EditTags = (props: {
                 </Dialog.Title>
                 <div className="mt-2">
                   {tags && tags.length > 0 ? (
-                    tags.map((tag) => <EditTagItem {...tag} />)
+                    tags.map((tag) => <EditTagItem key={tag.id} {...tag} />)
                   ) : (
                     <div className="text-sm">No tags</div>
                   )}
