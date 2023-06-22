@@ -1,13 +1,13 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment } from "react";
-import { FaPencilAlt, FaTimesCircle, FaTrashAlt } from "react-icons/fa";
-import { api } from "~/utils/api";
+import { Fragment, useEffect, useRef, useState } from "react";
+import { FaPencilAlt, FaSave, FaTimesCircle, FaTrashAlt } from "react-icons/fa";
+import { type RouterOutputs, api } from "~/utils/api";
 
-export const EditTags = (props: {
-  show: boolean;
-  onShowChange: (show: boolean) => void;
-}) => {
-  const { data: tags } = api.tags.getAll.useQuery();
+type Tag = RouterOutputs["tags"]["getAll"][number];
+const EditTagItem = (tag: Tag) => {
+  const [edit, setEdit] = useState(false);
+  const [input, setInput] = useState(tag.name);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const ctx = api.useContext();
 
@@ -18,6 +18,90 @@ export const EditTags = (props: {
       void ctx.tags.getByTodo.invalidate();
     },
   });
+
+  const { mutate: editTag } = api.tags.edit.useMutation({
+    onSuccess: () => {
+      void ctx.tags.getAll.invalidate();
+      void ctx.tags.search.invalidate();
+      void ctx.tags.getByTodo.invalidate();
+    },
+  });
+
+  useEffect(() => {
+    if (edit && inputRef.current) {
+      inputRef.current.focus();
+      inputRef.current.select();
+    }
+  }, [edit]);
+
+  return (
+    <div key={tag.id} className="mb-2 flex">
+      <input
+        className="mr-2 w-full rounded-md bg-slate-500 px-2 py-1"
+        type="text"
+        value={input}
+        spellCheck={false}
+        aria-label={tag.name}
+        ref={inputRef}
+        onChange={(e) => setInput(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            if (input !== "") {
+              editTag({
+                id: tag.id,
+                name: input,
+              });
+              if (inputRef.current) {
+                inputRef.current.setSelectionRange(
+                  inputRef.current.value.length,
+                  inputRef.current.value.length
+                );
+              }
+              setEdit(false);
+            }
+          }
+        }}
+        readOnly={!edit}
+      />
+      <button
+        onClick={() => setEdit(true)}
+        className="mr-2 flex-shrink-0 rounded border-4 border-gray-500 bg-gray-500 px-2 py-1 text-sm text-white outline-none transition-colors duration-200 hover:border-gray-700 hover:bg-gray-700"
+        hidden={edit}
+      >
+        <FaPencilAlt />
+      </button>
+      <button
+        className="mr-2 flex-shrink-0 rounded border-4 border-green-500 bg-green-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-green-700 hover:bg-green-700"
+        type="button"
+        onClick={() => {
+          if (input !== "") {
+            editTag({
+              id: tag.id,
+              name: input,
+            });
+            setEdit(false);
+          }
+        }}
+        hidden={!edit}
+      >
+        <FaSave />
+      </button>
+      <button
+        onClick={() => deleteTag({ id: tag.id })}
+        className="flex-shrink-0 rounded border-4 border-red-500 bg-red-500 px-2 py-1 text-sm text-white outline-none transition-colors duration-200 hover:border-red-700 hover:bg-red-700"
+      >
+        <FaTrashAlt />
+      </button>
+    </div>
+  );
+};
+
+export const EditTags = (props: {
+  show: boolean;
+  onShowChange: (show: boolean) => void;
+}) => {
+  const { data: tags } = api.tags.getAll.useQuery();
 
   return (
     <Transition appear show={props.show} as={Fragment}>
@@ -58,28 +142,7 @@ export const EditTags = (props: {
                 </Dialog.Title>
                 <div className="mt-2">
                   {tags && tags.length > 0 ? (
-                    tags.map((tag) => (
-                      <div key={tag.id} className="mb-2 flex">
-                        <input
-                          key={tag.id}
-                          className="mr-2 w-full rounded-md bg-slate-500 px-2 py-1"
-                          type="text"
-                          value={tag.name}
-                          spellCheck={false}
-                          aria-label={tag.name}
-                          readOnly={true}
-                        />
-                        <button className="mr-2 flex-shrink-0 rounded border-4 border-gray-500 bg-gray-500 px-2 py-1 text-sm text-white outline-none transition-colors duration-200 hover:border-gray-700 hover:bg-gray-700">
-                          <FaPencilAlt />
-                        </button>
-                        <button
-                          onClick={() => deleteTag({ id: tag.id })}
-                          className="flex-shrink-0 rounded border-4 border-red-500 bg-red-500 px-2 py-1 text-sm text-white outline-none transition-colors duration-200 hover:border-red-700 hover:bg-red-700"
-                        >
-                          <FaTrashAlt />
-                        </button>
-                      </div>
-                    ))
+                    tags.map((tag) => <EditTagItem {...tag} />)
                   ) : (
                     <div className="text-sm">No tags</div>
                   )}
