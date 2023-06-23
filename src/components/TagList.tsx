@@ -3,6 +3,7 @@ import { Fragment, useState } from "react";
 import { FaTag, FaTimesCircle } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 import { type RouterOutputs, api } from "~/utils/api";
+import { LoadingSpinner } from "./Loading";
 
 type Tag = RouterOutputs["tags"]["getByTodo"][number];
 export const TagList = (props: {
@@ -70,47 +71,54 @@ export const TagList = (props: {
                   <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                     <div className="relative bg-white/10 p-7 text-white backdrop-blur-md">
                       <span className="text-xl font-bold">Set tags:</span>
-                      <input
-                        className="mt-2 h-8 w-full appearance-none rounded-lg border-none bg-white/20 px-2 leading-tight focus:outline-none"
-                        type="text"
-                        aria-label="Set tags"
-                        placeholder="Press comma or enter to add tag"
-                        autoFocus={true}
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === "," || e.key === "Enter") {
-                            e.preventDefault();
-                            if (input.trim() === "") {
-                              toast.error("Tag name can't be empty");
-                              setInput("");
-                              return;
-                            }
+                      <div className="mt-2 flex items-center">
+                        <input
+                          className="h-8 w-full appearance-none rounded-lg border-none bg-white/20 px-2 leading-tight focus:outline-none"
+                          type="text"
+                          aria-label="Set tags"
+                          placeholder="Press comma or enter to add tag"
+                          autoFocus={true}
+                          value={input}
+                          onChange={(e) => setInput(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === "," || e.key === "Enter") {
+                              e.preventDefault();
+                              if (input.trim() === "") {
+                                toast.error("Tag name can't be empty");
+                                setInput("");
+                                return;
+                              }
 
-                            if (
-                              props.todoTags
-                                .map((t) => t.name)
-                                .includes(input.trim())
-                            ) {
-                              toast.error("Tag already set");
-                              setInput("");
-                              return;
-                            }
+                              if (
+                                props.todoTags
+                                  .map((t) => t.name)
+                                  .includes(input.trim())
+                              ) {
+                                toast.error("Tag already set");
+                                setInput("");
+                                return;
+                              }
 
-                            const existingTag = tags?.find(
-                              (t) => t.name === input.trim()
-                            );
-                            if (existingTag) {
-                              addTag(existingTag);
-                              setInput("");
-                              return;
-                            }
+                              const existingTag = tags?.find(
+                                (t) => t.name === input.trim()
+                              );
+                              if (existingTag) {
+                                addTag(existingTag);
+                                setInput("");
+                                return;
+                              }
 
-                            createTag({ name: input.trim() });
-                          }
-                        }}
-                        disabled={isCreating}
-                      />
+                              createTag({ name: input.trim() });
+                            }
+                          }}
+                          disabled={isCreating}
+                        />
+                        {isCreating && (
+                          <div className="absolute right-9">
+                            <LoadingSpinner size={20} />
+                          </div>
+                        )}
+                      </div>
                       <div className="flex flex-wrap items-center pt-2">
                         {props.todoTags.map((tag) => (
                           <span
