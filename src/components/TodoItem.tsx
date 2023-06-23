@@ -22,11 +22,18 @@ export const TodoItem = (props: Todo) => {
   const [input, setInput] = useState(props.content);
   const [dueDate, setDueDate] = useState(props.dueDate);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [showTagList, setShowTagList] = useState(false);
+  const [showDueDate, setShowDueDate] = useState(false);
 
+  const handleShowTagListChange = (newShow: boolean) => {
+    setShowTagList(newShow);
+  };
+  const handleShowDueDateChange = (newShow: boolean) => {
+    setShowDueDate(newShow);
+  };
   const handleDateChange = (newDate: string) => {
     setDueDate(newDate);
   };
-
   const handleTagChange = (newTags: Tag[]) => {
     setTags(newTags);
   };
@@ -135,15 +142,33 @@ export const TodoItem = (props: Todo) => {
             >
               <FaPencilAlt />
             </button>
-            <TagList
+            <button
+              className=" mr-2 flex-shrink-0 rounded border-4 border-slate-500 bg-slate-500 px-2 py-1 text-sm text-white outline-none transition-colors duration-200 hover:border-slate-700 hover:bg-slate-700"
+              type="button"
               hidden={!edit}
+              onClick={() => setShowTagList(true)}
+            >
+              <FaTag />
+            </button>
+            <TagList
+              show={showTagList}
               todoTags={tags}
               onTagChange={handleTagChange}
+              onShowChange={handleShowTagListChange}
             />
-            <DueDate
+            <button
+              className="mr-2 flex-shrink-0 rounded border-4 border-orange-500 bg-orange-500 px-2 py-1 text-sm text-white outline-none transition-colors duration-200 hover:border-orange-700 hover:bg-orange-700"
+              type="button"
               hidden={!edit}
+              onClick={() => setShowDueDate(true)}
+            >
+              <FaCalendar />
+            </button>
+            <DueDate
+              show={showDueDate}
               dueDate={dueDate}
               onDateChange={handleDateChange}
+              onShowChange={handleShowDueDateChange}
             />
             <button
               className="flex-shrink-0 rounded border-4 border-green-500 bg-green-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-green-700 hover:bg-green-700"
