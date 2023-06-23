@@ -83,7 +83,7 @@ export const TagList = (props: {
                 </Dialog.Title>
                 <div className="mt-2 flex items-center">
                   <input
-                    className="h-8 w-full appearance-none rounded-lg border-none bg-white/70 px-2 leading-tight focus:outline-none dark:bg-white/20"
+                    className="h-8 w-full appearance-none rounded-lg border-none bg-black/20 px-2 leading-tight placeholder-black/50 focus:outline-none dark:bg-white/20 dark:placeholder-white/50"
                     type="text"
                     aria-label="Set tags"
                     placeholder="Press comma or enter to add tag"

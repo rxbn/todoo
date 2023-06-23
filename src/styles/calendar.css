@@ -1,5 +1,5 @@
 .react-calendar {
-  @apply rounded bg-white/70 p-2 dark:bg-white/20;
+  @apply rounded bg-black/20 p-2 dark:bg-white/20;
 }
 
 .react-calendar button {
@@ -39,11 +39,11 @@
 }
 
 .react-calendar__month-view__days__day--weekend {
-  @apply text-red-600 dark:text-red-300;
+  @apply text-red-700 dark:text-red-300;
 }
 
 .react-calendar__month-view__days__day--neighboringMonth {
-  @apply text-gray-300 dark:text-gray-400;
+  @apply text-gray-500 dark:text-gray-400;
 }
 
 .react-calendar__year-view .react-calendar__tile,
@@ -61,7 +61,7 @@
 }
 
 .react-calendar__tile--now {
-  @apply bg-none text-blue-600 dark:text-blue-300;
+  @apply bg-none text-blue-700 dark:text-blue-300;
 }
 
 .react-calendar__tile--active {
