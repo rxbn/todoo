@@ -1,6 +1,6 @@
-import { Popover, Transition } from "@headlessui/react";
+import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
-import { FaTag, FaTimesCircle } from "react-icons/fa";
+import { FaTimesCircle } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 import { type RouterOutputs, api } from "~/utils/api";
 import { LoadingSpinner } from "./Loading";
@@ -8,7 +8,8 @@ import { LoadingSpinner } from "./Loading";
 type Tag = RouterOutputs["tags"]["getByTodo"][number];
 export const TagList = (props: {
   todoTags: Tag[];
-  hidden: boolean;
+  show: boolean;
+  onShowChange: (show: boolean) => void;
   onTagChange: (newTags: Tag[]) => void;
 }) => {
   const [input, setInput] = useState("");
@@ -23,7 +24,7 @@ export const TagList = (props: {
 
   const ctx = api.useContext();
 
-  const { data: tags, isLoading } = api.tags.getAll.useQuery();
+  const { data: tags } = api.tags.getAll.useQuery();
 
   const { mutate: createTag, isLoading: isCreating } =
     api.tags.create.useMutation({
@@ -50,131 +51,127 @@ export const TagList = (props: {
       setInput("");
     }
   };
-
-  if (isLoading) return null;
-
   return (
-    <div className="relative inline-flex">
-      <Popover className="relative">
-        {({ open }) => (
-          <>
-            <Popover.Button
-              hidden={props.hidden}
-              className={`${open ? "" : "text-opacity-90"}
-            mr-2 flex-shrink-0 rounded border-4 border-slate-500 bg-slate-500 px-2 py-1 text-sm text-white outline-none transition-colors duration-200 hover:border-slate-700 hover:bg-slate-700`}
-            >
-              <FaTag />
-            </Popover.Button>
-            <Transition
+    <Transition appear show={props.show} as={Fragment}>
+      <Dialog as="div" onClose={() => props.onShowChange(false)}>
+        <Transition.Child
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="fixed inset-0 bg-black bg-opacity-50" />
+        </Transition.Child>
+
+        <div className="fixed inset-0 overflow-y-auto">
+          <div className="flex min-h-full items-center justify-center p-4 text-center">
+            <Transition.Child
               as={Fragment}
-              enter="transition ease-out duration-200"
-              enterFrom="opacity-0 translate-y-1"
-              enterTo="opacity-100 translate-y-0"
-              leave="transition ease-in duration-150"
-              leaveFrom="opacity-100 translate-y-0"
-              leaveTo="opacity-0 translate-y-1"
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 scale-95"
+              enterTo="opacity-100 scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-95"
             >
-              <Popover.Panel className="absolute left-1/2 z-10 mt-3 w-screen max-w-sm -translate-x-1/2 transform px-4 sm:px-0">
-                {({ close }) => (
-                  <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-                    <div className="relative bg-white/10 p-7 text-white backdrop-blur-md">
-                      <span className="text-xl font-bold">Set tags:</span>
-                      <div className="mt-2 flex items-center">
-                        <input
-                          className="h-8 w-full appearance-none rounded-lg border-none bg-white/20 px-2 leading-tight focus:outline-none"
-                          type="text"
-                          aria-label="Set tags"
-                          placeholder="Press comma or enter to add tag"
-                          autoFocus={true}
-                          value={input}
-                          onChange={(e) => setInput(e.target.value)}
-                          onKeyDown={(e) => {
-                            if (e.key === "," || e.key === "Enter") {
-                              e.preventDefault();
-                              if (input.trim() === "") {
-                                toast.error("Tag can't be empty");
-                                setInput("");
-                                return;
-                              }
+              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white/10 p-6 text-left align-middle shadow-xl backdrop-blur-md transition-all">
+                <span className="text-xl font-bold">Set tags:</span>
+                <div className="mt-2 flex items-center">
+                  <input
+                    className="h-8 w-full appearance-none rounded-lg border-none bg-white/20 px-2 leading-tight focus:outline-none"
+                    type="text"
+                    aria-label="Set tags"
+                    placeholder="Press comma or enter to add tag"
+                    autoFocus={true}
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "," || e.key === "Enter") {
+                        e.preventDefault();
+                        if (input.trim() === "") {
+                          toast.error("Tag can't be empty");
+                          setInput("");
+                          return;
+                        }
 
-                              if (
-                                props.todoTags
-                                  .map((t) => t.name)
-                                  .includes(input.trim())
-                              ) {
-                                toast.error("Tag already set");
-                                setInput("");
-                                return;
-                              }
+                        if (
+                          props.todoTags
+                            .map((t) => t.name)
+                            .includes(input.trim())
+                        ) {
+                          toast.error("Tag already set");
+                          setInput("");
+                          return;
+                        }
 
-                              const existingTag = tags?.find(
-                                (t) => t.name === input.trim()
-                              );
-                              if (existingTag) {
-                                addTag(existingTag);
-                                setInput("");
-                                return;
-                              }
+                        const existingTag = tags?.find(
+                          (t) => t.name === input.trim()
+                        );
+                        if (existingTag) {
+                          addTag(existingTag);
+                          setInput("");
+                          return;
+                        }
 
-                              createTag({ name: input.trim() });
-                            }
-                          }}
-                          disabled={isCreating}
-                        />
-                        {isCreating && (
-                          <div className="absolute right-9">
-                            <LoadingSpinner size={20} />
-                          </div>
-                        )}
-                      </div>
-                      <div className="flex flex-wrap items-center pt-2">
-                        {props.todoTags.map((tag) => (
-                          <span
-                            key={tag.id}
-                            className="mr-2 mt-2 flex cursor-default items-center rounded-md bg-slate-500 p-1 pl-2"
-                          >
-                            {tag.name}
-                            <FaTimesCircle
-                              className="ml-3 cursor-pointer rounded-full transition-colors duration-200 hover:border-red-500 hover:bg-red-500"
-                              onClick={() => {
-                                props.onTagChange(
-                                  props.todoTags.filter((t) => t !== tag)
-                                );
-                              }}
-                            />
-                          </span>
-                        ))}
-                      </div>
-                      {searchResult && searchResult.length > 0 && (
-                        <span className="inline-grid pt-2 text-lg font-bold">
-                          Available tags:
-                        </span>
-                      )}
-                      <div className="flex w-full flex-wrap items-center">
-                        {searchResult?.map((tag) => (
-                          <span
-                            key={tag.id}
-                            className="mr-2 mt-2 flex cursor-pointer rounded-md bg-slate-500 p-1 transition-colors duration-200 hover:bg-slate-700"
-                            onClick={() => addTag(tag)}
-                          >
-                            {tag.name}
-                          </span>
-                        ))}
-                      </div>
-                      <Popover.Button
-                        className="absolute right-2 top-2 rounded-full p-1 transition-colors duration-200 hover:bg-white/20"
-                        onClick={() => close()}
-                      >
-                        <FaTimesCircle />
-                      </Popover.Button>
+                        createTag({ name: input.trim() });
+                      }
+                    }}
+                    disabled={isCreating}
+                  />
+                  {isCreating && (
+                    <div className="absolute right-9">
+                      <LoadingSpinner size={20} />
                     </div>
-                  </div>
+                  )}
+                </div>
+                <div className="flex flex-wrap items-center pt-2">
+                  {props.todoTags.map((tag) => (
+                    <span
+                      key={tag.id}
+                      className="mr-2 mt-2 flex cursor-default items-center rounded-md bg-slate-500 p-1 pl-2"
+                    >
+                      {tag.name}
+                      <FaTimesCircle
+                        className="ml-3 cursor-pointer rounded-full transition-colors duration-200 hover:border-red-500 hover:bg-red-500"
+                        onClick={() => {
+                          props.onTagChange(
+                            props.todoTags.filter((t) => t !== tag)
+                          );
+                        }}
+                      />
+                    </span>
+                  ))}
+                </div>
+                {searchResult && searchResult.length > 0 && (
+                  <span className="inline-grid pt-2 text-lg font-bold">
+                    Available tags:
+                  </span>
                 )}
-              </Popover.Panel>
-            </Transition>
-          </>
-        )}
-      </Popover>
-    </div>
+                <div className="flex w-full flex-wrap items-center">
+                  {searchResult?.map((tag) => (
+                    <span
+                      key={tag.id}
+                      className="mr-2 mt-2 flex cursor-pointer rounded-md bg-slate-500 p-1 transition-colors duration-200 hover:bg-slate-700"
+                      onClick={() => addTag(tag)}
+                    >
+                      {tag.name}
+                    </span>
+                  ))}
+                </div>
+                <button
+                  className="absolute right-2 top-2 rounded-full p-1 transition-colors duration-200 hover:bg-white/20"
+                  onClick={() => props.onShowChange(false)}
+                >
+                  <FaTimesCircle />
+                </button>
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
+        </div>
+      </Dialog>
+    </Transition>
   );
 };

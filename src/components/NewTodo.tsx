@@ -11,7 +11,15 @@ export const NewTodo = () => {
   const [input, setInput] = useState("");
   const [tags, setTags] = useState<Tag[]>([]);
   const [dueDate, setDueDate] = useState("");
+  const [showTagList, setShowTagList] = useState(false);
+  const [showDueDate, setShowDueDate] = useState(false);
 
+  const handleShowTagListChange = (newShow: boolean) => {
+    setShowTagList(newShow);
+  };
+  const handleShowDueDateChange = (newShow: boolean) => {
+    setShowDueDate(newShow);
+  };
   const handleDateChange = (newDate: string) => {
     setDueDate(newDate);
   };
@@ -74,15 +82,31 @@ export const NewTodo = () => {
                 <LoadingSpinner size={20} />
               </div>
             )}
+            <button
+              className=" mr-2 flex-shrink-0 rounded border-4 border-slate-500 bg-slate-500 px-2 py-1 text-sm text-white outline-none transition-colors duration-200 hover:border-slate-700 hover:bg-slate-700"
+              type="button"
+              onClick={() => setShowTagList(true)}
+            >
+              <FaTag />
+            </button>
             <TagList
-              hidden={false}
+              show={showTagList}
               todoTags={tags}
               onTagChange={handleTagChange}
+              onShowChange={handleShowTagListChange}
             />
+            <button
+              className="mr-2 flex-shrink-0 rounded border-4 border-orange-500 bg-orange-500 px-2 py-1 text-sm text-white outline-none transition-colors duration-200 hover:border-orange-700 hover:bg-orange-700"
+              type="button"
+              onClick={() => setShowDueDate(true)}
+            >
+              <FaCalendar />
+            </button>
             <DueDate
-              hidden={false}
+              show={showDueDate}
               dueDate={dueDate}
               onDateChange={handleDateChange}
+              onShowChange={handleShowDueDateChange}
             />
             <button
               className="flex-shrink-0 rounded border-4 border-blue-500 bg-blue-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-blue-700 hover:bg-blue-700"
