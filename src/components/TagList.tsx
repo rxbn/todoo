@@ -148,7 +148,7 @@ export const TagList = (props: {
                   ))}
                 </div>
                 {searchResult && searchResult.length > 0 && (
-                  <span className="inline-grid pt-2 text-lg font-bold">
+                  <span className="inline-grid pt-2 font-semibold">
                     Available tags:
                   </span>
                 )}
