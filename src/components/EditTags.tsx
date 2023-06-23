@@ -29,7 +29,7 @@ const EditTagItem = (tag: Tag) => {
       void ctx.tags.getByTodo.invalidate();
     },
     onError: () => {
-      toast.error("Tag name must be unique");
+      toast.error("Tag must be unique");
       setInput(tag.name);
     },
   });

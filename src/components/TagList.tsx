@@ -92,7 +92,7 @@ export const TagList = (props: {
                             if (e.key === "," || e.key === "Enter") {
                               e.preventDefault();
                               if (input.trim() === "") {
-                                toast.error("Tag name can't be empty");
+                                toast.error("Tag can't be empty");
                                 setInput("");
                                 return;
                               }
