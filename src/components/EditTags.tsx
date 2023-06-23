@@ -70,6 +70,7 @@ const EditTagItem = (tag: Tag) => {
           }
         }}
         readOnly={!edit}
+        disabled={isEditing}
       />
       {(isEditing || isDeleting) && (
         <div className="mr-2 flex items-center justify-center">
@@ -86,6 +87,7 @@ const EditTagItem = (tag: Tag) => {
       <button
         className="mr-2 flex-shrink-0 rounded border-4 border-green-500 bg-green-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-green-700 hover:bg-green-700"
         type="button"
+        disabled={isEditing}
         onClick={() => {
           if (input !== "") {
             editTag({
@@ -102,6 +104,7 @@ const EditTagItem = (tag: Tag) => {
       <button
         onClick={() => deleteTag({ id: tag.id })}
         className="flex-shrink-0 rounded border-4 border-red-500 bg-red-500 px-2 py-1 text-sm text-white outline-none transition-colors duration-200 hover:border-red-700 hover:bg-red-700"
+        disabled={isDeleting}
       >
         <FaTrashAlt />
       </button>

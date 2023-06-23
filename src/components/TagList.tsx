@@ -32,6 +32,14 @@ export const TagList = (props: {
         props.onTagChange([...props.todoTags, data]);
         setInput("");
       },
+      onError: (e) => {
+        const errorMessage = e.data?.zodError?.fieldErrors.content;
+        if (errorMessage && errorMessage[0]) {
+          toast.error(errorMessage[0]);
+        } else {
+          toast.error("Failed to create tag");
+        }
+      },
     });
 
   const searchResult = tags && filterTags(tags, input, props.todoTags);

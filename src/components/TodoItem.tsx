@@ -148,6 +148,7 @@ export const TodoItem = (props: Todo) => {
             <button
               className="flex-shrink-0 rounded border-4 border-green-500 bg-green-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-green-700 hover:bg-green-700"
               type="button"
+              disabled={isEditing}
               onClick={() => {
                 if (input.trim() === "") {
                   toast.error("Todo can't be empty");
@@ -171,6 +172,7 @@ export const TodoItem = (props: Todo) => {
             <button
               className="flex-shrink-0 rounded border-4 border-green-500 bg-green-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-green-700 hover:bg-green-700"
               type="button"
+              disabled={isToggleLoading}
               onClick={() => toggleDone({ id: props.id, done: true })}
               hidden={props.done || edit}
             >
@@ -179,6 +181,7 @@ export const TodoItem = (props: Todo) => {
             <button
               className="mr-2 flex-shrink-0 rounded border-4 border-green-500 bg-green-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-green-700 hover:bg-green-700"
               type="button"
+              disabled={isToggleLoading}
               onClick={() => toggleDone({ id: props.id, done: false })}
               hidden={!props.done}
             >
@@ -187,6 +190,7 @@ export const TodoItem = (props: Todo) => {
             <button
               className="flex-shrink-0 rounded border-4 border-red-500 bg-red-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-red-700 hover:bg-red-700"
               type="button"
+              disabled={isDeleting}
               onClick={() => deleteTodo({ id: props.id })}
               hidden={!props.done}
             >

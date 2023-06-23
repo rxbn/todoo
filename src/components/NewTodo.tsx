@@ -28,6 +28,14 @@ export const NewTodo = () => {
       setDueDate("");
       void ctx.todos.get.invalidate();
     },
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors.content;
+      if (errorMessage && errorMessage[0]) {
+        toast.error(errorMessage[0]);
+      } else {
+        toast.error("Failed to create todo");
+      }
+    },
   });
 
   return (
@@ -79,6 +87,7 @@ export const NewTodo = () => {
             <button
               className="flex-shrink-0 rounded border-4 border-blue-500 bg-blue-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-blue-700 hover:bg-blue-700"
               type="button"
+              disabled={isCreating}
               onClick={() => {
                 if (input.trim() === "") {
                   toast.error("Todo can't be empty");

@@ -1,5 +1,14 @@
+import { TRPCError } from "@trpc/server";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis/nodejs";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+
+const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(10, "1 m"),
+  analytics: true,
+});
 
 export const todoRouter = createTRPCRouter({
   get: protectedProcedure
@@ -23,6 +32,9 @@ export const todoRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      const { success } = await ratelimit.limit(ctx.session.user.id);
+      if (!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
+
       const todo = await ctx.prisma.todo.create({
         data: {
           userId: ctx.session.user.id,
