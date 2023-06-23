@@ -45,7 +45,7 @@ export const DueDate = (props: {
                     if (!e) return;
                     const newDate = dayjs(e.toString()).format("YYYY-MM-DD");
                     props.onDateChange(newDate);
-                    close();
+                    props.onShowChange(false);
                   }}
                   minDetail="year"
                 />
