@@ -3,6 +3,7 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import { FaPencilAlt, FaSave, FaTimesCircle, FaTrashAlt } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 import { type RouterOutputs, api } from "~/utils/api";
+import { LoadingSpinner } from "./Loading";
 
 type Tag = RouterOutputs["tags"]["getAll"][number];
 const EditTagItem = (tag: Tag) => {
@@ -12,15 +13,16 @@ const EditTagItem = (tag: Tag) => {
 
   const ctx = api.useContext();
 
-  const { mutate: deleteTag } = api.tags.delete.useMutation({
-    onSuccess: () => {
-      void ctx.tags.getAll.invalidate();
-      void ctx.tags.search.invalidate();
-      void ctx.tags.getByTodo.invalidate();
-    },
-  });
+  const { mutate: deleteTag, isLoading: isDeleting } =
+    api.tags.delete.useMutation({
+      onSuccess: () => {
+        void ctx.tags.getAll.invalidate();
+        void ctx.tags.search.invalidate();
+        void ctx.tags.getByTodo.invalidate();
+      },
+    });
 
-  const { mutate: editTag } = api.tags.edit.useMutation({
+  const { mutate: editTag, isLoading: isEditing } = api.tags.edit.useMutation({
     onSuccess: () => {
       void ctx.tags.getAll.invalidate();
       void ctx.tags.search.invalidate();
@@ -69,6 +71,11 @@ const EditTagItem = (tag: Tag) => {
         }}
         readOnly={!edit}
       />
+      {(isEditing || isDeleting) && (
+        <div className="mr-2 flex items-center justify-center">
+          <LoadingSpinner size={20} />
+        </div>
+      )}
       <button
         onClick={() => setEdit(true)}
         className="mr-2 flex-shrink-0 rounded border-4 border-gray-500 bg-gray-500 px-2 py-1 text-sm text-white outline-none transition-colors duration-200 hover:border-gray-700 hover:bg-gray-700"
