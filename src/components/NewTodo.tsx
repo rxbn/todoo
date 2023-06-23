@@ -4,6 +4,7 @@ import { type RouterOutputs, api } from "~/utils/api";
 import { TagList } from "./TagList";
 import { DueDate } from "./DueDate";
 import toast from "react-hot-toast";
+import { LoadingSpinner } from "./Loading";
 
 type Tag = RouterOutputs["tags"]["getAll"][number];
 export const NewTodo = () => {
@@ -60,6 +61,11 @@ export const NewTodo = () => {
               }}
               disabled={isCreating}
             />
+            {isCreating && (
+              <div className="mr-2 flex items-center justify-center">
+                <LoadingSpinner size={20} />
+              </div>
+            )}
             <TagList
               hidden={false}
               todoTags={tags}

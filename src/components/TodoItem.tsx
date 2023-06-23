@@ -7,12 +7,13 @@ import {
   FaSave,
   FaTag,
   FaTimesCircle,
+  FaTrashAlt,
 } from "react-icons/fa";
 import { type RouterOutputs, api } from "~/utils/api";
 import { TagList } from "./TagList";
 import { DueDate } from "./DueDate";
-import { DeleteConfirmation } from "./DeleteConfirmation";
 import toast from "react-hot-toast";
+import { LoadingSpinner } from "./Loading";
 
 type Todo = RouterOutputs["todos"]["get"][number];
 type Tag = RouterOutputs["tags"]["getByTodo"][number];
@@ -43,26 +44,36 @@ export const TodoItem = (props: Todo) => {
     }
   }, [todoTags]);
 
-  const { mutate: toggleDone } = api.todos.toggleDone.useMutation({
-    onSuccess: () => {
-      void ctx.todos.get.invalidate();
-    },
-  });
-
-  const { mutate: editTodo } = api.todos.edit.useMutation({
-    onSuccess: () => {
-      void ctx.todos.get.invalidate();
-      void ctx.tags.getAll.invalidate();
-      void ctx.tags.getByTodo.invalidate();
-    },
-  });
-
   useEffect(() => {
     if (edit && inputRef.current) {
       inputRef.current.focus();
       inputRef.current.select();
     }
   }, [edit]);
+
+  const { mutate: toggleDone, isLoading: isToggleLoading } =
+    api.todos.toggleDone.useMutation({
+      onSuccess: () => {
+        void ctx.todos.get.invalidate();
+      },
+    });
+
+  const { mutate: editTodo, isLoading: isEditing } = api.todos.edit.useMutation(
+    {
+      onSuccess: () => {
+        void ctx.todos.get.invalidate();
+        void ctx.tags.getAll.invalidate();
+        void ctx.tags.getByTodo.invalidate();
+      },
+    }
+  );
+
+  const { mutate: deleteTodo, isLoading: isDeleting } =
+    api.todos.delete.useMutation({
+      onSuccess: () => {
+        void ctx.todos.get.invalidate();
+      },
+    });
 
   if (!tags) return null;
   return (
@@ -106,8 +117,14 @@ export const TodoItem = (props: Todo) => {
                   setEdit(false);
                 }
               }}
+              disabled={isEditing}
               readOnly={!edit}
             />
+            {(isEditing || isToggleLoading || isDeleting) && (
+              <div className="mr-2 flex items-center justify-center">
+                <LoadingSpinner size={20} />
+              </div>
+            )}
             <button
               className="mr-2 flex-shrink-0 rounded border-4 border-gray-500 bg-gray-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-gray-700 hover:bg-gray-700"
               type="button"
@@ -167,7 +184,14 @@ export const TodoItem = (props: Todo) => {
             >
               <FaRegCircle />
             </button>
-            <DeleteConfirmation hidden={!props.done} id={props.id} />
+            <button
+              className="flex-shrink-0 rounded border-4 border-red-500 bg-red-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-red-700 hover:bg-red-700"
+              type="button"
+              onClick={() => deleteTodo({ id: props.id })}
+              hidden={!props.done}
+            >
+              <FaTrashAlt />
+            </button>
           </div>
           {((tags && tags.length > 0) || dueDate) && !props.done ? (
             <div className="mt-2 flex flex-wrap px-2 text-sm text-slate-400">
