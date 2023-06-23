@@ -143,7 +143,7 @@ export const NewTodo = () => {
                     </span>
                   ))}
                   <FaTimesCircle
-                    className="ml-0.5"
+                    className="ml-0.5 cursor-pointer rounded-full transition-colors duration-200 hover:border-red-500 hover:bg-red-500"
                     onClick={() => setTags([])}
                   />
                 </div>
@@ -155,7 +155,7 @@ export const NewTodo = () => {
                     {dueDate}
                   </span>
                   <FaTimesCircle
-                    className="ml-0.5"
+                    className="ml-0.5 cursor-pointer rounded-full transition-colors duration-200 hover:border-red-500 hover:bg-red-500"
                     onClick={() => setDueDate("")}
                   />
                 </div>
