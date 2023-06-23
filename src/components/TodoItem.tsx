@@ -89,7 +89,7 @@ export const TodoItem = (props: Todo) => {
         <li className="border-b-2 border-blue-500 py-2">
           <div className="flex items-center">
             <input
-              className={`mr-3 w-full appearance-none border-none bg-transparent px-2 py-1 leading-tight text-white focus:outline-none ${
+              className={`mr-3 w-full appearance-none border-none bg-transparent px-2 py-1 leading-tight focus:outline-none dark:text-white ${
                 props.done ? "line-through" : ""
               }`}
               type="text"
@@ -223,7 +223,7 @@ export const TodoItem = (props: Todo) => {
             </button>
           </div>
           {((tags && tags.length > 0) || dueDate) && !props.done ? (
-            <div className="mt-2 flex flex-wrap px-2 text-sm text-slate-400">
+            <div className="mt-2 flex flex-wrap px-2 text-sm">
               {tags && tags.length > 0 && (
                 <div className="mb-0.5 mr-2 flex flex-wrap items-center">
                   <FaTag className="mr-0.5" />

@@ -77,11 +77,13 @@ export const TagList = (props: {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white/10 p-6 text-left align-middle shadow-xl backdrop-blur-md transition-all">
-                <span className="text-xl font-bold">Set tags:</span>
+              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white/60 p-6 text-left align-middle shadow-xl backdrop-blur-md transition-all dark:bg-white/10">
+                <Dialog.Title as="h3" className="text-xl font-bold leading-6">
+                  Set Tags
+                </Dialog.Title>
                 <div className="mt-2 flex items-center">
                   <input
-                    className="h-8 w-full appearance-none rounded-lg border-none bg-white/20 px-2 leading-tight focus:outline-none"
+                    className="h-8 w-full appearance-none rounded-lg border-none bg-white/70 px-2 leading-tight focus:outline-none dark:bg-white/20"
                     type="text"
                     aria-label="Set tags"
                     placeholder="Press comma or enter to add tag"
@@ -131,7 +133,7 @@ export const TagList = (props: {
                   {props.todoTags.map((tag) => (
                     <span
                       key={tag.id}
-                      className="mr-2 mt-2 flex cursor-default items-center rounded-md bg-slate-500 p-1 pl-2"
+                      className="mr-2 mt-2 flex cursor-default items-center rounded-md bg-slate-500 p-1 pl-2 text-white"
                     >
                       {tag.name}
                       <FaTimesCircle
@@ -154,7 +156,7 @@ export const TagList = (props: {
                   {searchResult?.map((tag) => (
                     <span
                       key={tag.id}
-                      className="mr-2 mt-2 flex cursor-pointer rounded-md bg-slate-500 p-1 transition-colors duration-200 hover:bg-slate-700"
+                      className="mr-2 mt-2 flex cursor-pointer rounded-md bg-slate-500 p-1 text-white transition-colors duration-200 hover:bg-slate-700"
                       onClick={() => addTag(tag)}
                     >
                       {tag.name}
@@ -162,7 +164,7 @@ export const TagList = (props: {
                   ))}
                 </div>
                 <button
-                  className="absolute right-2 top-2 rounded-full p-1 transition-colors duration-200 hover:bg-white/20"
+                  className="absolute right-2 top-2 rounded-full p-1 transition-colors duration-200 hover:bg-black/20 dark:hover:bg-white/20"
                   onClick={() => props.onShowChange(false)}
                 >
                   <FaTimesCircle />

@@ -52,7 +52,7 @@ export const NewTodo = () => {
         <div className="relative border-b-2 border-blue-500 py-2">
           <div className="flex items-center">
             <input
-              className="mr-3 w-full appearance-none border-none bg-transparent px-2 py-1 leading-tight text-white focus:outline-none"
+              className="mr-3 w-full appearance-none border-none bg-transparent px-2 py-1 leading-tight focus:outline-none dark:text-white"
               type="text"
               placeholder="New Todo"
               spellCheck={false}
@@ -130,7 +130,7 @@ export const NewTodo = () => {
             </button>
           </div>
           {tags.length > 0 || dueDate ? (
-            <div className="mt-2 flex flex-wrap px-2 text-sm text-slate-400">
+            <div className="mt-2 flex flex-wrap px-2 text-sm">
               {tags.length > 0 && (
                 <div className="mb-0.5 mr-2 flex flex-wrap items-center">
                   <FaTag className="mr-0.5" />

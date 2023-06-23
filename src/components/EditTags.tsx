@@ -44,7 +44,7 @@ const EditTagItem = (tag: Tag) => {
   return (
     <div key={tag.id} className="mb-2 flex">
       <input
-        className="mr-2 w-full rounded-md bg-slate-500 px-2 py-1"
+        className="mr-2 w-full rounded-md bg-slate-500 px-2 py-1 text-white"
         type="text"
         value={input}
         spellCheck={false}
@@ -144,11 +144,8 @@ export const EditTags = (props: {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white/10 p-6 text-left align-middle shadow-xl backdrop-blur-md transition-all">
-                <Dialog.Title
-                  as="h3"
-                  className="text-xl font-bold leading-6 text-white"
-                >
+              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white/60 p-6 text-left align-middle shadow-xl backdrop-blur-md transition-all dark:bg-white/10">
+                <Dialog.Title as="h3" className="text-xl font-bold leading-6">
                   Edit Tags
                 </Dialog.Title>
                 <div className="mt-2">
@@ -159,7 +156,7 @@ export const EditTags = (props: {
                   )}
                 </div>
                 <button
-                  className="absolute right-2 top-2 rounded-full p-1 transition-colors duration-200 hover:bg-white/20"
+                  className="absolute right-2 top-2 rounded-full p-1 transition-colors duration-200 hover:bg-black/20 dark:hover:bg-white/20"
                   onClick={() => props.onShowChange(false)}
                 >
                   <FaTimesCircle />
