@@ -109,7 +109,7 @@ export const NewTodo = () => {
               onShowChange={handleShowDueDateChange}
             />
             <button
-              className="flex-shrink-0 rounded border-4 border-blue-500 bg-blue-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-blue-700 hover:bg-blue-700"
+              className="flex-shrink-0 rounded border-4 border-blue-500 bg-blue-500 px-2 py-1 text-sm text-white outline-none transition-colors duration-200 hover:border-blue-700 hover:bg-blue-700"
               type="button"
               disabled={isCreating}
               onClick={() => {

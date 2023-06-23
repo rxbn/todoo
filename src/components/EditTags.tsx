@@ -44,7 +44,7 @@ const EditTagItem = (tag: Tag) => {
   return (
     <div key={tag.id} className="mb-2 flex">
       <input
-        className="mr-2 w-full rounded-md bg-slate-500 px-2 py-1 text-white"
+        className="mr-2 w-full rounded-md bg-slate-500 px-2 py-1 text-white outline-none"
         type="text"
         value={input}
         spellCheck={false}
@@ -85,7 +85,7 @@ const EditTagItem = (tag: Tag) => {
         <FaPencilAlt />
       </button>
       <button
-        className="mr-2 flex-shrink-0 rounded border-4 border-green-500 bg-green-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-green-700 hover:bg-green-700"
+        className="mr-2 flex-shrink-0 rounded border-4 border-green-500 bg-green-500 px-2 py-1 text-sm text-white outline-none transition-colors duration-200 hover:border-green-700 hover:bg-green-700"
         type="button"
         disabled={isEditing}
         onClick={() => {

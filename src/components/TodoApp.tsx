@@ -26,7 +26,7 @@ export const TodoApp = (props: { userName: string | null | undefined }) => {
       <div className="mb-4 text-center">Welcome, {props.userName}!</div>
       <div className="mb-8 inline-flex w-full justify-center">
         <button
-          className="mr-2 rounded border-4 border-slate-500 bg-slate-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-slate-700 hover:bg-slate-700"
+          className="mr-2 rounded border-4 border-slate-500 bg-slate-500 px-2 py-1 text-sm text-white outline-none transition-colors duration-200 hover:border-slate-700 hover:bg-slate-700"
           type="button"
           onClick={() => setShowEditTags(true)}
         >
@@ -34,7 +34,7 @@ export const TodoApp = (props: { userName: string | null | undefined }) => {
           <span className="ml-2">Edit Tags</span>
         </button>
         <button
-          className="rounded border-4 border-red-500 bg-red-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-red-700 hover:bg-red-700"
+          className="rounded border-4 border-red-500 bg-red-500 px-2 py-1 text-sm text-white outline-none transition-colors duration-200 hover:border-red-700 hover:bg-red-700"
           type="button"
           onClick={() => void signOut()}
         >

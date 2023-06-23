@@ -133,7 +133,7 @@ export const TodoItem = (props: Todo) => {
               </div>
             )}
             <button
-              className="mr-2 flex-shrink-0 rounded border-4 border-gray-500 bg-gray-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-gray-700 hover:bg-gray-700"
+              className="mr-2 flex-shrink-0 rounded border-4 border-gray-500 bg-gray-500 px-2 py-1 text-sm text-white outline-none transition-colors duration-200 hover:border-gray-700 hover:bg-gray-700"
               type="button"
               hidden={props.done || edit}
               onClick={() => {
@@ -171,7 +171,7 @@ export const TodoItem = (props: Todo) => {
               onShowChange={handleShowDueDateChange}
             />
             <button
-              className="flex-shrink-0 rounded border-4 border-green-500 bg-green-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-green-700 hover:bg-green-700"
+              className="flex-shrink-0 rounded border-4 border-green-500 bg-green-500 px-2 py-1 text-sm text-white outline-none transition-colors duration-200 hover:border-green-700 hover:bg-green-700"
               type="button"
               disabled={isEditing}
               onClick={() => {
@@ -195,7 +195,7 @@ export const TodoItem = (props: Todo) => {
               <FaSave />
             </button>
             <button
-              className="flex-shrink-0 rounded border-4 border-green-500 bg-green-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-green-700 hover:bg-green-700"
+              className="flex-shrink-0 rounded border-4 border-green-500 bg-green-500 px-2 py-1 text-sm text-white outline-none transition-colors duration-200 hover:border-green-700 hover:bg-green-700"
               type="button"
               disabled={isToggleLoading}
               onClick={() => toggleDone({ id: props.id, done: true })}
@@ -204,7 +204,7 @@ export const TodoItem = (props: Todo) => {
               <FaCheck />
             </button>
             <button
-              className="mr-2 flex-shrink-0 rounded border-4 border-green-500 bg-green-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-green-700 hover:bg-green-700"
+              className="mr-2 flex-shrink-0 rounded border-4 border-green-500 bg-green-500 px-2 py-1 text-sm text-white outline-none transition-colors duration-200 hover:border-green-700 hover:bg-green-700"
               type="button"
               disabled={isToggleLoading}
               onClick={() => toggleDone({ id: props.id, done: false })}
@@ -213,7 +213,7 @@ export const TodoItem = (props: Todo) => {
               <FaRegCircle />
             </button>
             <button
-              className="flex-shrink-0 rounded border-4 border-red-500 bg-red-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-red-700 hover:bg-red-700"
+              className="flex-shrink-0 rounded border-4 border-red-500 bg-red-500 px-2 py-1 text-sm text-white outline-none transition-colors duration-200 hover:border-red-700 hover:bg-red-700"
               type="button"
               disabled={isDeleting}
               onClick={() => deleteTodo({ id: props.id })}
