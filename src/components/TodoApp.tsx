@@ -22,7 +22,7 @@ export const TodoApp = (props: { userName: string | null | undefined }) => {
   if (incompleteTodosLoading || completedTodosLoading) return <LoadingPage />;
 
   return (
-    <div>
+    <div className="mb-8">
       <div className="mb-4 text-center">Welcome, {props.userName}!</div>
       <div className="mb-8 inline-flex w-full justify-center">
         <button
