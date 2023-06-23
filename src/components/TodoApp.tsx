@@ -5,16 +5,21 @@ import { TodoView } from "./TodoView";
 import { FaSignOutAlt, FaTag } from "react-icons/fa";
 import { useState } from "react";
 import { EditTags } from "./EditTags";
+import { LoadingPage } from "./Loading";
 
 export const TodoApp = (props: { userName: string | null | undefined }) => {
-  const { data: incompleteTodos } = api.todos.get.useQuery({ done: false });
-  const { data: completedTodos } = api.todos.get.useQuery({ done: true });
+  const { data: incompleteTodos, isLoading: incompleteTodosLoading } =
+    api.todos.get.useQuery({ done: false });
+  const { data: completedTodos, isLoading: completedTodosLoading } =
+    api.todos.get.useQuery({ done: true });
 
   const [showEditTags, setShowEditTags] = useState(false);
 
   const handleShowChange = (newShow: boolean) => {
     setShowEditTags(newShow);
   };
+
+  if (incompleteTodosLoading || completedTodosLoading) return <LoadingPage />;
 
   return (
     <div>
