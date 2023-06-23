@@ -74,6 +74,7 @@ export const TagList = (props: {
                         className="mt-2 h-8 w-full appearance-none rounded-lg border-none bg-white/20 px-2 leading-tight focus:outline-none"
                         type="text"
                         aria-label="Set tags"
+                        placeholder="Press comma or enter to add tag"
                         autoFocus={true}
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
