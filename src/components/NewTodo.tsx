@@ -52,7 +52,7 @@ export const NewTodo = () => {
         <div className="relative border-b-2 border-blue-500 py-2">
           <div className="flex items-center">
             <input
-              className="mr-3 w-full appearance-none border-none bg-transparent px-2 py-1 leading-tight focus:outline-none dark:text-white"
+              className="mr-3 w-full appearance-none border-none bg-transparent px-2 py-1 leading-tight focus:outline-none"
               type="text"
               placeholder="New Todo"
               spellCheck={false}
