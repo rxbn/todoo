@@ -61,7 +61,7 @@
 }
 
 .react-calendar__tile--now {
-  @apply bg-none text-blue-600 dark:text-blue-300;
+  @apply bg-none text-blue-600;
 }
 
 .react-calendar__tile--active {
