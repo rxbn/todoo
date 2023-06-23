@@ -43,7 +43,7 @@
 }
 
 .react-calendar__month-view__days__day--neighboringMonth {
-  @apply text-gray-400;
+  @apply text-gray-300 dark:text-gray-400;
 }
 
 .react-calendar__year-view .react-calendar__tile,
@@ -57,15 +57,15 @@
 }
 
 .react-calendar__tile:disabled {
-  @apply text-gray-400;
+  @apply text-gray-300 dark:text-gray-400;
 }
 
 .react-calendar__tile--now {
-  @apply bg-none text-blue-600;
+  @apply bg-none text-blue-600 dark:text-blue-300;
 }
 
 .react-calendar__tile--active {
-  @apply bg-orange-500 text-white;
+  @apply bg-orange-500 text-white dark:text-white;
 }
 
 .react-calendar__tile--active:enabled:hover,
