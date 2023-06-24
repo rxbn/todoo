@@ -84,8 +84,8 @@ export const TodoItem = (props: Todo) => {
 
   if (!tags) return null;
   return (
-    <div className="flex justify-center">
-      <ul className="w-full max-w-lg">
+    <div className="flex justify-center mx-2">
+      <ul className="w-full max-w-xl">
         <li className="border-b-2 border-blue-500 py-2">
           <div className="flex items-center">
             <input

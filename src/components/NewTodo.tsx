@@ -47,8 +47,8 @@ export const NewTodo = () => {
   });
 
   return (
-    <div className="flex justify-center">
-      <form className="w-full max-w-lg">
+    <div className="flex justify-center mx-2">
+      <form className="w-full max-w-xl">
         <div className="relative border-b-2 border-blue-500 py-2">
           <div className="flex items-center">
             <input
