@@ -31,7 +31,6 @@ const MyApp: AppType<{ session: Session | null }> = ({
             },
           }}
         />
-        <h1 className="pb-3 pt-3 text-center text-4xl font-bold">ToDoo</h1>
         <Component {...pageProps} />
       </SessionProvider>
     </ThemeProvider>
