@@ -12,9 +12,7 @@ const Home: NextPage = () => {
   return (
     <main>
       {session.status === "unauthenticated" && <LoginScreen />}
-      {session.status === "authenticated" && (
-        <TodoApp userName={session.data.user.name} />
-      )}
+      {session.status === "authenticated" && <TodoApp />}
     </main>
   );
 };
