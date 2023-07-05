@@ -4,7 +4,7 @@ import { FaSignInAlt } from "react-icons/fa";
 export const LoginScreen = () => {
   return (
     <div className="text-center">
-      <h1 className="mt-3 text-center text-4xl font-bold">ToDoo</h1>
+      <h1 className="mt-3 text-4xl font-bold">ToDoo</h1>
       <div className="mb-2">Sign in to get started!</div>
       <button
         className="rounded border-4 border-blue-500 bg-blue-500 px-2 py-1 text-sm text-white transition-colors duration-200 hover:border-blue-700 hover:bg-blue-700"
