@@ -10,7 +10,7 @@ import {
   FaTrashAlt,
 } from "react-icons/fa";
 import { type RouterOutputs, api } from "~/utils/api";
-import { TagList } from "./TagList";
+import { SetTags } from "./SetTags";
 import { DueDate } from "./DueDate";
 import toast from "react-hot-toast";
 import { LoadingSpinner } from "./Loading";
@@ -149,7 +149,7 @@ export const TodoItem = (props: Todo) => {
           >
             <FaTag />
           </button>
-          <TagList
+          <SetTags
             show={showTagList}
             todoTags={tags}
             onTagChange={handleTagChange}

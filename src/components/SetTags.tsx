@@ -6,7 +6,7 @@ import { type RouterOutputs, api } from "~/utils/api";
 import { LoadingSpinner } from "./Loading";
 
 type Tag = RouterOutputs["tags"]["getByTodo"][number];
-export const TagList = (props: {
+export const SetTags = (props: {
   todoTags: Tag[];
   show: boolean;
   onShowChange: (show: boolean) => void;
@@ -83,7 +83,7 @@ export const TagList = (props: {
                 </Dialog.Title>
                 <div className="mt-2 flex items-center">
                   <input
-                    className="h-8 w-full appearance-none rounded-lg border-none bg-black/20 px-2 leading-tight placeholder-black/50 focus:outline-none dark:bg-white/20 dark:placeholder-white/50"
+                    className="w-full appearance-none rounded-lg border-none bg-black/20 p-2 placeholder-black/50 focus:outline-none dark:bg-white/20 dark:placeholder-white/50"
                     type="text"
                     aria-label="Set tags"
                     placeholder="Press comma or enter to add tag"
