@@ -14,6 +14,7 @@ import { SetTags } from "./SetTags";
 import { DueDate } from "./DueDate";
 import toast from "react-hot-toast";
 import { LoadingSpinner } from "./Loading";
+import dayjs from "dayjs";
 
 type Todo = RouterOutputs["todos"]["get"][number];
 type Tag = RouterOutputs["tags"]["getByTodo"][number];
@@ -247,7 +248,7 @@ export const TodoItem = (props: Todo) => {
               <div className="mb-0.5 flex items-center">
                 <FaCalendar className="mr-0.5" />
                 <span className="rounded-md bg-orange-500 p-0.5 text-white">
-                  {dueDate}
+                  {dueDate === dayjs().format("YYYY-MM-DD") ? "Today" : dueDate}
                 </span>
                 {edit && (
                   <FaTimesCircle
