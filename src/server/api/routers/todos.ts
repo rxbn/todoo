@@ -19,6 +19,9 @@ export const todoRouter = createTRPCRouter({
           userId: ctx.session.user.id,
           done: input.done,
         },
+        include: {
+          tags: true,
+        },
       });
       return todos;
     }),
@@ -29,7 +32,7 @@ export const todoRouter = createTRPCRouter({
         content: z.string(),
         dueDate: z.string().optional(),
         tags: z.array(z.string()).optional(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       const { success } = await ratelimit.limit(ctx.session.user.id);
@@ -61,7 +64,7 @@ export const todoRouter = createTRPCRouter({
         content: z.string(),
         dueDate: z.string().optional(),
         tags: z.array(z.string()).optional(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       const todo = await ctx.prisma.todo.update({
@@ -90,7 +93,7 @@ export const todoRouter = createTRPCRouter({
       z.object({
         id: z.string(),
         done: z.boolean(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       const todo = await ctx.prisma.todo.update({
@@ -109,7 +112,7 @@ export const todoRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       const todo = await ctx.prisma.todo.delete({
