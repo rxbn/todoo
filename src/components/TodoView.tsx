@@ -1,4 +1,4 @@
-import { FaFilter } from "react-icons/fa";
+import { FaFilter, FaTimesCircle } from "react-icons/fa";
 import { TodoItem } from "./TodoItem";
 import type { RouterOutputs } from "~/utils/api";
 import { useState } from "react";
@@ -48,7 +48,7 @@ export const TodoView = (props: {
       <div className="h-8" />
       <h2 className="mb-3 text-center text-2xl font-bold">{props.title}</h2>
       {props.title === "Open" && (
-        <div className="mb-3 flex justify-center">
+        <div className="mb-3 flex items-center justify-center">
           <button
             className="inline-flex items-center rounded border-4 border-slate-500 bg-slate-500 px-2 py-1 text-sm text-white outline-none transition-colors duration-200 hover:border-slate-700 hover:bg-slate-700"
             type="button"
@@ -60,6 +60,15 @@ export const TodoView = (props: {
               {selectedTags.length > 0 && `, ${selectedTags.length} Tag(s)`}
             </span>
           </button>
+          {(selectedTags.length > 0 || search) && (
+            <FaTimesCircle
+              className="ml-2 cursor-pointer rounded-full transition-colors duration-200 hover:border-red-500 hover:bg-red-500"
+              onClick={() => {
+                setSearch("");
+                setSelectedTags([]);
+              }}
+            />
+          )}
           <FilterView
             show={showFilterView}
             onShowChange={handleShowFilterViewChange}
