@@ -20,9 +20,15 @@ export const TodoView = (props: {
     return todos.filter((todo) => {
       const matchesSearch =
         !search || todo.content.toLowerCase().includes(search.toLowerCase());
-      const matchesTags =
-        selectedTags.length === 0 ||
-        todo.tags.some((tag) => selectedTags.includes(tag.id));
+
+      if (selectedTags.length === 0) {
+        return matchesSearch;
+      }
+
+      const matchesTags = selectedTags.every((tagId) =>
+        todo.tags.some((tag) => tag.id === tagId),
+      );
+
       return matchesSearch && matchesTags;
     });
   };
