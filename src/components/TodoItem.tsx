@@ -72,7 +72,7 @@ export const TodoItem = (props: Todo) => {
         void ctx.tags.getAll.invalidate();
         void ctx.tags.getByTodo.invalidate();
       },
-    }
+    },
   );
 
   const { mutate: deleteTodo, isLoading: isDeleting } =
@@ -116,7 +116,7 @@ export const TodoItem = (props: Todo) => {
                 if (inputRef.current) {
                   inputRef.current.setSelectionRange(
                     inputRef.current.value.length,
-                    inputRef.current.value.length
+                    inputRef.current.value.length,
                   );
                 }
                 setInput(input.trim());
