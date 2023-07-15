@@ -1,5 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
-@import "./calendar.css";
 
 @tailwind base;
 @tailwind components;
@@ -9,4 +8,79 @@
   html {
     font-family: Quicksand, sans-serif;
   }
+}
+
+.react-calendar {
+  @apply rounded bg-black/20 p-2 dark:bg-white/20;
+}
+
+.react-calendar button {
+  @apply outline-none;
+}
+
+.react-calendar button:enabled:hover {
+  @apply cursor-pointer;
+}
+
+.react-calendar__navigation {
+  @apply mb-2 flex h-11 text-lg font-bold;
+}
+
+.react-calendar__navigation button {
+  @apply flex-grow;
+}
+
+.react-calendar__navigation__label {
+  @apply w-32;
+}
+
+.react-calendar__navigation button:enabled:hover {
+  @apply rounded bg-black/20 transition-colors duration-200 dark:bg-white/20;
+}
+
+.react-calendar__month-view__weekdays {
+  @apply cursor-default text-center font-semibold uppercase decoration-current;
+}
+
+.react-calendar__month-view__weekdays__weekday abbr {
+  @apply no-underline;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  @apply pb-0.5;
+}
+
+.react-calendar__month-view__days__day--weekend {
+  @apply text-red-700 dark:text-red-300;
+}
+
+.react-calendar__month-view__days__day--neighboringMonth {
+  @apply text-gray-500 dark:text-gray-400;
+}
+
+.react-calendar__year-view .react-calendar__tile,
+.react-calendar__decade-view .react-calendar__tile,
+.react-calendar__century-view .react-calendar__tile {
+  @apply px-4 py-4;
+}
+
+.react-calendar__tile {
+  @apply rounded px-2 py-2 transition-colors duration-200 hover:bg-black/20 dark:hover:bg-white/20;
+}
+
+.react-calendar__tile:disabled {
+  @apply text-gray-300 dark:text-gray-400;
+}
+
+.react-calendar__tile--now {
+  @apply bg-none text-blue-700 dark:text-blue-300;
+}
+
+.react-calendar__tile--active {
+  @apply bg-orange-500 text-white dark:text-white;
+}
+
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+  @apply bg-orange-700;
 }
