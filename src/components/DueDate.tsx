@@ -43,6 +43,7 @@ export const DueDate = (props: {
                 <Calendar
                   className="mt-2"
                   value={props.dueDate}
+                  minDate={new Date()}
                   onChange={(e) => {
                     if (!e) return;
                     const newDate = dayjs(e.toString()).format("YYYY-MM-DD");
