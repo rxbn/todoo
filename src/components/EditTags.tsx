@@ -43,40 +43,42 @@ const EditTagItem = (tag: Tag) => {
 
   return (
     <div key={tag.id} className="mb-2 flex">
-      <input
-        className="mr-2 w-full rounded-md bg-slate-500 px-2 py-1 text-white outline-none"
-        type="text"
-        value={input}
-        spellCheck={false}
-        aria-label={tag.name}
-        ref={inputRef}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-            if (input !== "") {
-              editTag({
-                id: tag.id,
-                name: input,
-              });
-              if (inputRef.current) {
-                inputRef.current.setSelectionRange(
-                  inputRef.current.value.length,
-                  inputRef.current.value.length
-                );
+      <div className="mr-2 inline-flex w-full items-center rounded-md bg-slate-500">
+        <input
+          className="mr-2 w-full rounded-md bg-slate-500 px-2 py-1 text-white outline-none"
+          type="text"
+          value={input}
+          spellCheck={false}
+          aria-label={tag.name}
+          ref={inputRef}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              if (input !== "") {
+                editTag({
+                  id: tag.id,
+                  name: input,
+                });
+                if (inputRef.current) {
+                  inputRef.current.setSelectionRange(
+                    inputRef.current.value.length,
+                    inputRef.current.value.length,
+                  );
+                }
+                setEdit(false);
               }
-              setEdit(false);
             }
-          }
-        }}
-        readOnly={!edit}
-        disabled={isEditing}
-      />
-      {(isEditing || isDeleting) && (
-        <div className="mr-2 flex items-center justify-center">
-          <LoadingSpinner size={20} />
-        </div>
-      )}
+          }}
+          readOnly={!edit}
+          disabled={isEditing}
+        />
+        {(isEditing || isDeleting) && (
+          <div className="mr-2">
+            <LoadingSpinner size={20} />
+          </div>
+        )}
+      </div>
       <button
         onClick={() => setEdit(true)}
         className="mr-2 flex-shrink-0 rounded border-4 border-gray-500 bg-gray-500 px-2 py-1 text-sm text-white outline-none transition-colors duration-200 hover:border-gray-700 hover:bg-gray-700"
